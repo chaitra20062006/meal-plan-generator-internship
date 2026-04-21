@@ -119,6 +119,46 @@
         </div>
     </div>
 
+    <!-- Edit Side Dish Modal -->
+    <div class="modal-overlay hidden" id="editMealModal" onclick="if(event.target===this)closeEditMealModal()">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>✏️ Edit Side Dish</h3>
+                <button class="modal-close" onclick="closeEditMealModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <label class="modal-label">Dish Name</label>
+                <input type="text" class="modal-input" id="editMealName" placeholder="e.g. Cucumber Raita">
+                <label class="modal-label" style="margin-top:12px">Ingredients (name (qty), comma-separated)</label>
+                <input type="text" class="modal-input" id="editMealIngredients"
+                    placeholder="e.g. Curd (100g), Cucumber (70g), Cumin (2g)">
+                <div class="modal-macros-grid"
+                    style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
+                    <div>
+                        <label class="modal-label">Calories</label>
+                        <input type="number" class="modal-input" id="editMealCal" value="0" min="0">
+                    </div>
+                    <div>
+                        <label class="modal-label">Protein (g)</label>
+                        <input type="number" class="modal-input" id="editMealPro" value="0" min="0">
+                    </div>
+                    <div>
+                        <label class="modal-label">Carbs (g)</label>
+                        <input type="number" class="modal-input" id="editMealCarb" value="0" min="0">
+                    </div>
+                    <div>
+                        <label class="modal-label">Fat (g)</label>
+                        <input type="number" class="modal-input" id="editMealFat" value="0" min="0">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeEditMealModal()" style="margin-right:8px">Cancel</button>
+                <button class="btn-swap" onclick="confirmEditMeal()">✅ Save Changes</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast -->
     <div class="toast-container" id="toastContainer"></div>
 

@@ -1,3 +1,6 @@
+
+
+
 /**
  * Personalized Meal Plan Generator by IOM Bioworks
  */
@@ -184,22 +187,105 @@ const INGREDIENT_DISH_MAP = {
     '_default': {
         label: 'Gut Health Classics',
         breakfast: [
-            { name: 'Idli with Sambhar', ings: 'Rice idli, toor dal sambhar, vegetables', cal: 230, pro: 8, carb: 42, fat: 3 },
-            { name: 'Poha with Peanuts', ings: 'Pressed rice, peanuts, turmeric, curry leaves, lemon', cal: 250, pro: 7, carb: 38, fat: 8 },
+            { name: 'Idli with Sambhar', ings: 'Rice idli (120g), toor dal sambhar (150ml), vegetables (60g)', cal: 230, pro: 8, carb: 42, fat: 3 },
+            { name: 'Poha with Peanuts', ings: 'Pressed rice (70g), peanuts (20g), turmeric (1g), curry leaves (3g), lemon juice (10ml)', cal: 250, pro: 7, carb: 38, fat: 8 },
+            { name: 'Upma with Coconut Chutney', ings: 'Semolina (60g), onion (40g), mustard seeds (2g), oil (5ml), coconut chutney (40g)', cal: 260, pro: 7, carb: 40, fat: 7 },
+            { name: 'Vermicelli Upma', ings: 'Wheat vermicelli (70g), onion (40g), tomato (30g), oil (5ml), curry leaves (3g)', cal: 245, pro: 6, carb: 42, fat: 6 },
         ],
         snack: [
-            { name: 'Roasted Chana', ings: 'Roasted chickpeas, lemon, chaat masala', cal: 160, pro: 9, carb: 24, fat: 4 },
-            { name: 'Fruit Chaat', ings: 'Apple, guava, pomegranate, chaat masala, lemon', cal: 120, pro: 2, carb: 28, fat: 1 },
+            { name: 'Roasted Chana', ings: 'Roasted chickpeas (50g), lemon juice (5ml), chaat masala (2g)', cal: 160, pro: 9, carb: 24, fat: 4 },
+            { name: 'Fruit Chaat', ings: 'Apple (80g), guava (60g), pomegranate (30g), chaat masala (2g), lemon juice (5ml)', cal: 120, pro: 2, carb: 28, fat: 1 },
+            { name: 'Makhana (Fox Nuts)', ings: 'Makhana (30g), ghee (3g), rock salt (1g), black pepper (1g)', cal: 110, pro: 4, carb: 20, fat: 2 },
+            { name: 'Dhokla', ings: 'Besan (50g), curd (30g), eno (3g), mustard seeds (2g), oil (3ml)', cal: 150, pro: 7, carb: 22, fat: 4 },
         ],
         lunch: [
-            { name: 'Dal Tadka with Brown Rice', ings: 'Toor dal, garlic, cumin, ghee, brown rice', cal: 380, pro: 14, carb: 58, fat: 8 },
-            { name: 'Sambhar Rice', ings: 'Rice, mixed veg sambhar, coconut chutney', cal: 340, pro: 10, carb: 54, fat: 6 },
+            { name: 'Dal Tadka with Brown Rice', ings: 'Toor dal (60g), garlic (5g), cumin (2g), ghee (5g), brown rice (90g)', cal: 380, pro: 14, carb: 58, fat: 8 },
+            { name: 'Sambhar Rice', ings: 'Rice (90g), mixed veg sambhar (200ml), coconut chutney (40g)', cal: 340, pro: 10, carb: 54, fat: 6 },
+            { name: 'Vegetable Biryani', ings: 'Basmati rice (90g), mixed vegetables (100g), biryani masala (5g), ghee (5g)', cal: 340, pro: 9, carb: 55, fat: 8 },
+            { name: 'Millet Pulao', ings: 'Foxtail millet (80g), mixed vegetables (100g), cumin (2g), ghee (5g)', cal: 310, pro: 9, carb: 50, fat: 7 },
         ],
         dinner: [
-            { name: 'Moong Dal Khichdi', ings: 'Rice, moong dal, ghee, turmeric, cumin', cal: 320, pro: 12, carb: 50, fat: 7 },
-            { name: 'Masoor Dal with Chapati', ings: 'Masoor dal, wheat chapati, ghee, lemon', cal: 340, pro: 13, carb: 50, fat: 7 },
+            { name: 'Moong Dal Khichdi', ings: 'Rice (70g), moong dal (50g), ghee (5g), turmeric (1g), cumin (2g)', cal: 320, pro: 12, carb: 50, fat: 7 },
+            { name: 'Masoor Dal with Chapati', ings: 'Masoor dal (60g), wheat chapati (80g), ghee (5g), lemon juice (5ml)', cal: 340, pro: 13, carb: 50, fat: 7 },
+            { name: 'Vegetable Soup with Toast', ings: 'Mixed vegetables (200g), vegetable broth (200ml), whole wheat toast (60g), black pepper (2g)', cal: 200, pro: 6, carb: 30, fat: 4 },
+            { name: 'Palak Paneer with Roti', ings: 'Spinach (100g), paneer (60g), wheat roti (80g), onion (40g), oil (5ml)', cal: 370, pro: 17, carb: 38, fat: 16 },
         ],
-    }
+    },
+    // BROWN RICE — Ruminococcus, slow-release carbs
+    'brown rice': {
+        label: 'Brown Rice (Slow Carbs)',
+        breakfast: [
+            { name: 'Brown Rice Porridge', ings: 'Brown rice (60g), milk (150ml), jaggery (15g), cardamom (1g)', cal: 250, pro: 7, carb: 44, fat: 4 },
+        ],
+        lunch: [
+            { name: 'Brown Rice with Dal Fry', ings: 'Brown rice (90g), toor dal (60g), ghee (5g), cumin (2g), turmeric (1g)', cal: 370, pro: 13, carb: 58, fat: 7 },
+            { name: 'Brown Rice Vegetable Pulao', ings: 'Brown rice (90g), mixed vegetables (100g), cumin (2g), ghee (5g), bay leaf (1g)', cal: 330, pro: 8, carb: 54, fat: 7 },
+            { name: 'Curd Rice with Brown Rice', ings: 'Brown rice (100g), curd (100g), mustard (2g), curry leaves (3g), pomegranate (20g)', cal: 300, pro: 9, carb: 48, fat: 6 },
+        ],
+        dinner: [
+            { name: 'Brown Rice Khichdi', ings: 'Brown rice (80g), moong dal (50g), ghee (5g), vegetables (80g), turmeric (1g)', cal: 330, pro: 13, carb: 52, fat: 7 },
+            { name: 'Brown Rice Sambhar Bowl', ings: 'Brown rice (90g), sambhar (200ml), coconut chutney (30g)', cal: 340, pro: 11, carb: 54, fat: 6 },
+        ],
+    },
+    // SPINACH — Folate, iron, alkalising
+    'spinach': {
+        label: 'Spinach / Palak (Iron & Folate)',
+        breakfast: [
+            { name: 'Palak Paratha with Curd', ings: 'Whole wheat flour (80g), spinach (60g), ghee (5g), cumin (2g), curd (80g)', cal: 290, pro: 10, carb: 40, fat: 9 },
+            { name: 'Spinach Besan Cheela', ings: 'Besan (60g), spinach (50g), onion (30g), green chilli (3g), oil (3ml)', cal: 210, pro: 11, carb: 26, fat: 6 },
+        ],
+        snack: [
+            { name: 'Palak Soup', ings: 'Spinach (100g), onion (30g), garlic (5g), black pepper (2g), cream (15ml)', cal: 90, pro: 4, carb: 8, fat: 4 },
+            { name: 'Spinach Corn Sandwich', ings: 'Whole wheat bread (60g), spinach (40g), corn (30g), cheese (15g)', cal: 200, pro: 8, carb: 28, fat: 6 },
+        ],
+        lunch: [
+            { name: 'Palak Dal with Roti', ings: 'Toor dal (60g), spinach (80g), wheat roti (80g), ghee (5g)', cal: 340, pro: 14, carb: 48, fat: 7 },
+            { name: 'Palak Paneer with Roti', ings: 'Spinach (100g), paneer (60g), wheat roti (80g), onion (40g), oil (5ml)', cal: 370, pro: 17, carb: 38, fat: 16 },
+            { name: 'Green Moong Palak Khichdi', ings: 'Green moong (60g), rice (70g), spinach (60g), ghee (5g), garlic (5g)', cal: 320, pro: 13, carb: 50, fat: 7 },
+        ],
+        dinner: [
+            { name: 'Palak Khichdi', ings: 'Rice (70g), moong dal (40g), spinach (80g), ghee (5g), turmeric (1g)', cal: 305, pro: 12, carb: 46, fat: 7 },
+            { name: 'Spinach Soup with Garlic Toast', ings: 'Spinach (150g), garlic (5g), onion (40g), whole wheat toast (60g)', cal: 190, pro: 7, carb: 28, fat: 5 },
+        ],
+    },
+    // SWEET POTATO — Bifidobacterium, resistant starch
+    'sweet potato': {
+        label: 'Sweet Potato (Resistant Starch)',
+        breakfast: [
+            { name: 'Sweet Potato Paratha', ings: 'Sweet potato (100g), whole wheat flour (70g), ghee (5g), cumin (2g)', cal: 295, pro: 7, carb: 50, fat: 6 },
+            { name: 'Sweet Potato Smoothie Bowl', ings: 'Sweet potato (100g), banana (80g), curd (100g), honey (10g), flaxseed (10g)', cal: 270, pro: 8, carb: 46, fat: 5 },
+        ],
+        snack: [
+            { name: 'Roasted Sweet Potato Chaat', ings: 'Sweet potato (150g), cumin powder (2g), lemon juice (10ml), chaat masala (2g)', cal: 160, pro: 3, carb: 36, fat: 1 },
+            { name: 'Sweet Potato Tikki', ings: 'Sweet potato (150g), onion (30g), coriander (5g), besan (20g), oil (5ml)', cal: 195, pro: 5, carb: 38, fat: 4 },
+        ],
+        lunch: [
+            { name: 'Sweet Potato & Chickpea Curry', ings: 'Sweet potato (150g), chickpeas (80g), tomato (50g), spices (5g), oil (5ml)', cal: 330, pro: 12, carb: 55, fat: 7 },
+            { name: 'Sweet Potato Roti with Dal', ings: 'Sweet potato (100g), wheat flour (60g), moong dal (60g), ghee (5g)', cal: 350, pro: 13, carb: 56, fat: 7 },
+        ],
+        dinner: [
+            { name: 'Sweet Potato Sabzi with Chapati', ings: 'Sweet potato (150g), onion (50g), mustard seeds (2g), wheat chapati (80g), oil (5ml)', cal: 310, pro: 7, carb: 52, fat: 7 },
+            { name: 'Sweet Potato Soup', ings: 'Sweet potato (200g), onion (40g), garlic (5g), ginger (5g), black pepper (2g)', cal: 170, pro: 4, carb: 36, fat: 2 },
+        ],
+    },
+    // JOWAR (Sorghum) — gut-friendly fibre
+    'jowar': {
+        label: 'Jowar / Sorghum (Gut Fibre)',
+        breakfast: [
+            { name: 'Jowar Dosa with Chutney', ings: 'Jowar flour (70g), rice flour (20g), cumin (2g), onion (30g), coconut chutney (40g)', cal: 220, pro: 6, carb: 38, fat: 4 },
+            { name: 'Jowar Porridge', ings: 'Jowar flour (60g), milk (150ml), jaggery (15g), cardamom (1g)', cal: 230, pro: 7, carb: 38, fat: 4 },
+        ],
+        snack: [
+            { name: 'Jowar Puffs Chaat', ings: 'Jowar puffs (30g), onion (20g), tomato (20g), lemon juice (5ml), chaat masala (2g)', cal: 110, pro: 3, carb: 20, fat: 2 },
+        ],
+        lunch: [
+            { name: 'Jowar Roti with Vegetables', ings: 'Jowar flour (80g), seasonal vegetables (120g), onion (50g), oil (5ml)', cal: 300, pro: 8, carb: 48, fat: 6 },
+            { name: 'Jowar Khichdi', ings: 'Jowar (80g), moong dal (50g), ghee (5g), cumin (2g), turmeric (1g)', cal: 315, pro: 12, carb: 48, fat: 7 },
+        ],
+        dinner: [
+            { name: 'Jowar Roti with Dal', ings: 'Jowar roti (80g), toor dal (60g), ghee (5g), garlic (5g)', cal: 305, pro: 11, carb: 46, fat: 7 },
+        ],
+    },
 };
 
 // Keywords from the patient's report that map to our ingredient keys
@@ -213,22 +299,26 @@ const INGREDIENT_KEYWORDS = [
     { keys: ['rajma', 'kidney bean'], mapTo: 'rajma' },
     { keys: ['bajra', 'pearl millet'], mapTo: 'bajra' },
     { keys: ['banana', 'kela'], mapTo: 'banana' },
+    { keys: ['brown rice', 'brown rice'], mapTo: 'brown rice' },
+    { keys: ['spinach', 'palak'], mapTo: 'spinach' },
+    { keys: ['sweet potato', 'shakarkand'], mapTo: 'sweet potato' },
+    { keys: ['jowar', 'sorghum'], mapTo: 'jowar' },
 ];
 
 // Bacteria name → which ingredients to suggest (based on which bacteria each food supports)
 const BACTERIA_TO_INGREDIENTS = {
-    'Faecalibacterium': ['oats', 'ragi', 'whole wheat', 'flaxseed', 'banana'],
-    'Faecalibacterium prausnitzii': ['oats', 'ragi', 'whole wheat', 'flaxseed'],
-    'Bifidobacterium': ['curd', 'moong', 'oats', 'banana'],
-    'Lactobacillus': ['curd', 'flaxseed', 'moong'],
-    'Bacteroides': ['moong', 'whole wheat', 'curd', 'bajra'],
-    'Dialister': ['bajra', 'ragi', 'whole wheat'],
-    'Anaerostipes': ['banana', 'rajma', 'oats'],
-    'Roseburia': ['oats', 'whole wheat', 'ragi'],
-    'Akkermansia': ['curd', 'flaxseed', 'oats'],
-    'Ruminococcus': ['oats', 'whole wheat', 'ragi'],
-    'Blautia': ['curd', 'moong', 'bajra'],
-    'Prevotella': ['whole wheat', 'ragi', 'bajra'],
+    'Faecalibacterium': ['oats', 'ragi', 'whole wheat', 'flaxseed', 'banana', 'jowar'],
+    'Faecalibacterium prausnitzii': ['oats', 'ragi', 'whole wheat', 'flaxseed', 'brown rice'],
+    'Bifidobacterium': ['curd', 'moong', 'oats', 'banana', 'sweet potato'],
+    'Lactobacillus': ['curd', 'flaxseed', 'moong', 'spinach'],
+    'Bacteroides': ['moong', 'whole wheat', 'curd', 'bajra', 'brown rice'],
+    'Dialister': ['bajra', 'ragi', 'whole wheat', 'jowar'],
+    'Anaerostipes': ['banana', 'rajma', 'oats', 'sweet potato'],
+    'Roseburia': ['oats', 'whole wheat', 'ragi', 'jowar'],
+    'Akkermansia': ['curd', 'flaxseed', 'oats', 'sweet potato'],
+    'Ruminococcus': ['oats', 'whole wheat', 'ragi', 'brown rice'],
+    'Blautia': ['curd', 'moong', 'bajra', 'spinach'],
+    'Prevotella': ['whole wheat', 'ragi', 'bajra', 'jowar'],
 };
 
 // Bacteria to REDUCE → ingredients that do NOT make things worse (we still show good foods)
@@ -264,7 +354,7 @@ function getPatientIngredientKeys() {
 
     // Fallback if nothing matched
     if (ingSet.size === 0) {
-        ['oats', 'moong', 'curd', 'ragi', 'whole wheat', 'bajra', 'banana', 'flaxseed'].forEach(i => ingSet.add(i));
+        ['oats', 'moong', 'curd', 'ragi', 'whole wheat', 'bajra', 'banana', 'flaxseed', 'spinach', 'sweet potato', 'brown rice', 'jowar'].forEach(i => ingSet.add(i));
     }
     return Array.from(ingSet);
 }
@@ -401,9 +491,7 @@ function sanitizeMealPlan(plan) {
             usedNames.add(dish.name); // mark as used
 
             meal.name = dish.name;
-            meal.ingredients = dish.ings.split(',').map(i => ({
-                name: i.trim(), quantity_g: 'as needed'
-            }));
+            meal.ingredients = parseIngredientString(dish.ings);
             meal.total_calories = dish.cal;
             meal.protein_g = dish.pro;
             meal.carbs_g = dish.carb;
@@ -413,6 +501,22 @@ function sanitizeMealPlan(plan) {
             meal.benefits = `Recommended for gut health (IOM yes-list)`;
         });
     }
+}
+
+/**
+ * Parse an ingredient string like "Oats (80g), milk (150ml), honey (10g)"
+ * into [{name, quantity_g, unit}, ...] with real numeric quantities.
+ * Falls back to 100g for entries without a parenthesised quantity.
+ */
+function parseIngredientString(ingsStr) {
+    return ingsStr.split(',').map(part => {
+        part = part.trim();
+        const match = part.match(/^(.+?)\s*\((\d+(?:\.\d+)?)\s*(g|ml|tsp|tbsp)\)/i);
+        if (match) {
+            return { name: match[1].trim(), quantity_g: parseFloat(match[2]), unit: match[3].toLowerCase() };
+        }
+        return { name: part, quantity_g: 100, unit: 'g' };
+    });
 }
 
 
@@ -541,7 +645,7 @@ function renderDay(dayKey) {
             }
             return `<div class="ingredient-row">
                 <span class="ingredient-name">${esc(i.name || '')}</span>
-                <span class="ingredient-qty">${typeof i.quantity_g === 'number' ? i.quantity_g + 'g' : (i.quantity_g || '')}${nutInfo ? `<br><span class="ingredient-nutrition">${nutInfo}</span>` : ''}</span>
+                <span class="ingredient-qty">${typeof i.quantity_g === 'number' ? i.quantity_g + (i.unit || 'g') : (i.quantity_g || '')}${nutInfo ? `<br><span class="ingredient-nutrition">${nutInfo}</span>` : ''}</span>
             </div>`;
         }).join('');
 
@@ -573,6 +677,15 @@ function renderDay(dayKey) {
                         ➕ Add Side Dish
                     </button>
                 </div>`}
+                ${isSideDish ? `
+                <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+                    <button class="btn-swap-meal" style="background:rgba(99,102,241,0.15);color:#a5b4fc;border-color:#6366f1" onclick="openEditMealModal('${dayKey}','${type}')">
+                        ✏️ Edit
+                    </button>
+                    <button class="btn-swap-meal" style="background:rgba(239,68,68,0.15);color:#f87171;border-color:#ef4444" onclick="deleteSideDish('${dayKey}','${type}')">
+                        🗑️ Delete
+                    </button>
+                </div>` : ''}
             </div>
             <div class="meal-cal-box">
                 <span class="cal-value">${cal}</span>
@@ -583,18 +696,26 @@ function renderDay(dayKey) {
 
     $('mealsContainer').innerHTML = html;
 
-    // Daily summary
-    const target = mealPlanData.calorie_target || 2000;
+    // ── Daily summary with NIN RDA reference ──
+    // NIN (National Institute of Nutrition) Recommended Dietary Allowances
+    const gender = (patientProfile && patientProfile.gender || '').toLowerCase();
+    const isFemale = gender.startsWith('f') || gender === 'woman' || gender === 'female';
+    const NIN_RDA = isFemale
+        ? { cal: 2230, pro: 55, carb: 335, fat: 60, fib: 30, label: 'NIN RDA – Reference Woman' }
+        : { cal: 2730, pro: 60, carb: 410, fat: 73, fib: 30, label: 'NIN RDA – Reference Man' };
+    const target = mealPlanData.calorie_target || NIN_RDA.cal;
     const summary = $('dailySummary');
     summary.classList.remove('hidden');
     summary.innerHTML = `
-        <div class="summary-title">📊 Daily Totals — ${dayKey.replace('_', ' ').replace('d', 'D')}</div>
+        <div class="summary-title">📊 Daily Totals — ${dayKey.replace('_', ' ').replace('d', 'D')}
+            <span style="font-size:0.72rem;font-weight:400;color:var(--text-muted);margin-left:10px">vs ${NIN_RDA.label}</span>
+        </div>
         <div class="bar-grid">
             ${makeBar('Calories', totals.cal, target, 'kcal', 'cal')}
-            ${makeBar('Protein', totals.pro, 50, 'g', 'pro')}
-            ${makeBar('Carbs', totals.carb, 300, 'g', 'carb')}
-            ${makeBar('Fat', totals.fat, 65, 'g', 'fat')}
-            ${makeBar('Fiber', totals.fib, 25, 'g', 'fib')}
+            ${makeBar('Protein', totals.pro, NIN_RDA.pro, 'g', 'pro')}
+            ${makeBar('Carbs', totals.carb, NIN_RDA.carb, 'g', 'carb')}
+            ${makeBar('Fat', totals.fat, NIN_RDA.fat, 'g', 'fat')}
+            ${makeBar('Fiber', totals.fib, NIN_RDA.fib, 'g', 'fib')}
         </div>
     `;
 }
@@ -754,149 +875,393 @@ function confirmAddMeal() {
     showToast(`✅ Added side dish: "${name}"`, 'success');
 }
 
-// ═══ PDF Export — Dark premium theme, 8-page meal plan ═══
+// ═══ Edit Side Dish Feature ═══
+let _editDay = null;
+let _editKey = null;
+
+function openEditMealModal(dayKey, mealKey) {
+    const meal = mealPlanData && mealPlanData[dayKey] && mealPlanData[dayKey][mealKey];
+    if (!meal) return;
+    _editDay = dayKey;
+    _editKey = mealKey;
+
+    $('editMealName').value = meal.name || '';
+    $('editMealIngredients').value = (meal.ingredients || []).map(i => {
+        if (typeof i.quantity_g === 'number') return `${i.name} (${i.quantity_g}${i.unit || 'g'})`;
+        return i.name || '';
+    }).join(', ');
+    $('editMealCal').value  = meal.total_calories || 0;
+    $('editMealPro').value  = meal.protein_g  || 0;
+    $('editMealCarb').value = meal.carbs_g    || 0;
+    $('editMealFat').value  = meal.fat_g      || 0;
+    $('editMealModal').classList.remove('hidden');
+}
+
+function closeEditMealModal() {
+    $('editMealModal').classList.add('hidden');
+    _editDay = null;
+    _editKey = null;
+}
+
+function confirmEditMeal() {
+    if (!_editDay || !_editKey) return;
+    const meal = mealPlanData[_editDay][_editKey];
+    if (!meal) return;
+
+    meal.name           = $('editMealName').value.trim() || meal.name;
+    meal.ingredients    = parseIngredientString($('editMealIngredients').value);
+    meal.total_calories = parseInt($('editMealCal').value)  || 0;
+    meal.protein_g      = parseInt($('editMealPro').value)  || 0;
+    meal.carbs_g        = parseInt($('editMealCarb').value) || 0;
+    meal.fat_g          = parseInt($('editMealFat').value)  || 0;
+    meal.benefits       = meal.benefits || '✏️ Edited by Nutritionist';
+
+    closeEditMealModal();
+    renderDay(_editDay);
+    autosavePlan();
+    showToast(`✅ Updated: "${meal.name}"`, 'success');
+}
+
+// ═══ Delete Side Dish Feature ═══
+function deleteSideDish(dayKey, mealKey) {
+    if (!mealPlanData || !mealPlanData[dayKey]) return;
+    const meal = mealPlanData[dayKey][mealKey];
+    const name = meal ? meal.name : mealKey;
+    if (!confirm(`Delete "${name}"?`)) return;
+    delete mealPlanData[dayKey][mealKey];
+    if (window.customLabels) delete window.customLabels[mealKey];
+    renderDay(dayKey);
+    autosavePlan();
+    showToast(`🗑️ Deleted: "${name}"`, 'info');
+}
+
+
+// ═══ PDF Export — built programmatically with jsPDF (no html2canvas, no blank pages) ═══
 function downloadPDF() {
     if (!mealPlanData) { showToast('⚠️ No meal plan to export.', 'error'); return; }
     const kitId = $('kitId').value.trim() || 'MealPlan';
-    showToast('📄 Generating PDF… please wait (~10s)', 'info', 15000);
+    showToast('📄 Generating PDF…', 'info', 8000);
 
-    const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    const ML = { breakfast: '🌅 Breakfast', mid_morning_snack: '🍎 Mid-Morning Snack', lunch: '☀️ Lunch', evening_snack: '🍶 Evening Snack', dinner: '🌙 Dinner' };
+    try {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
 
-    // Format quantity: "as needed" stays as-is, numbers get "g"
-    function fq(i) {
-        const q = i.quantity_g;
-        if (q == null || q === '') return '';
-        if (typeof q === 'string') return q;
-        return q + 'g';
-    }
+        const PW = 210, PH = 297;
+        const LM = 14, RM = 14, TM = 14;
+        const CW = PW - LM - RM;
+        let y = TM;
+        let pageNum = 1;
 
-    // ── Build HTML pages as strings ──
-    let pagesHtml = '';
+        const BG       = [15,  23,  42];
+        const BG2      = [30,  41,  59];
+        const ACCENT   = [129, 140, 248];
+        const GREEN    = [52,  211, 153];
+        const MUTED    = [148, 163, 184];
+        const WHITE    = [241, 245, 249];
+        const BORDER   = [51,  65,  85];
 
-    // === PAGE 1: Profile ===
-    if (patientProfile) {
-        const p = patientProfile;
-        const tag = (t, c) => '<span style="display:inline-block;padding:3px 10px;border-radius:999px;font-size:9px;font-weight:600;margin:2px;' + c + '">' + t + '</span>';
-        const bi = (p.bacteria_to_increase || []).filter(b => !b.name.includes('Other')).map(b => tag(b.name, 'background:#052e16;color:#34d399;border:1px solid #065f46')).join('');
-        const bd = (p.bacteria_to_decrease || []).filter(b => !b.name.includes('Other')).map(b => tag(b.name, 'background:#1e3a5f;color:#60a5fa;border:1px solid #1d4ed8')).join('');
-        const av = (p.avoid_list || []).map(a => tag(a, 'background:#450a0a;color:#f87171;border:1px solid #991b1b')).join('');
+        const dayNames = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+        const MEAL_LABELS = {
+            breakfast: 'Breakfast',
+            mid_morning_snack: 'Mid-Morning Snack',
+            lunch: 'Lunch',
+            evening_snack: 'Evening Snack',
+            dinner: 'Dinner'
+        };
 
-        pagesHtml += '<div style="page-break-after:always;padding:40px 36px;background:#0f172a;color:#e2e8f0;font-family:Arial,sans-serif;width:794px;min-height:1100px">';
-        pagesHtml += '<div style="text-align:center;margin-bottom:20px;padding-bottom:14px;border-bottom:3px solid #6366f1">';
-        pagesHtml += '<div style="font-size:22px;color:#818cf8;font-weight:700;margin-bottom:6px">🌱 NutriGenie — 7-Day Personalized Meal Plan</div>';
-        pagesHtml += '<div style="font-size:10px;color:#64748b">Kit ID: ' + kitId + ' · Generated: ' + new Date().toLocaleDateString('en-IN') + ' · IOM Bioworks</div>';
-        pagesHtml += '</div>';
-        // Patient info table
-        pagesHtml += '<div style="background:#1e293b;border-left:4px solid #818cf8;padding:16px 20px;border-radius:8px;margin-bottom:18px">';
-        pagesHtml += '<div style="font-size:15px;color:#818cf8;font-weight:700;margin-bottom:10px">📋 Patient Profile</div>';
-        pagesHtml += '<table style="width:100%;border-collapse:collapse;font-size:11px">';
-        pagesHtml += '<tr><td style="padding:6px 10px;color:#94a3b8;font-weight:bold;border-bottom:1px solid #334155;width:16%">Kit ID</td><td style="padding:6px 10px;color:#cbd5e1;border-bottom:1px solid #334155">' + (p.kit_id || '') + '</td><td style="padding:6px 10px;color:#94a3b8;font-weight:bold;border-bottom:1px solid #334155;width:16%">Age</td><td style="padding:6px 10px;color:#cbd5e1;border-bottom:1px solid #334155">' + (p.age || 'N/A') + '</td></tr>';
-        pagesHtml += '<tr><td style="padding:6px 10px;color:#94a3b8;font-weight:bold;border-bottom:1px solid #334155">Gender</td><td style="padding:6px 10px;color:#cbd5e1;border-bottom:1px solid #334155">' + (p.gender || 'N/A') + '</td><td style="padding:6px 10px;color:#94a3b8;font-weight:bold;border-bottom:1px solid #334155">BMI</td><td style="padding:6px 10px;color:#cbd5e1;border-bottom:1px solid #334155">' + (p.bmi || 'N/A') + '</td></tr>';
-        pagesHtml += '<tr><td style="padding:6px 10px;color:#94a3b8;font-weight:bold;border-bottom:1px solid #334155">Diet</td><td style="padding:6px 10px;color:#cbd5e1;border-bottom:1px solid #334155">' + (p.diet_type || 'Veg') + '</td><td style="padding:6px 10px;color:#94a3b8;font-weight:bold;border-bottom:1px solid #334155">Location</td><td style="padding:6px 10px;color:#cbd5e1;border-bottom:1px solid #334155">' + (p.location || 'N/A') + '</td></tr>';
-        pagesHtml += '<tr><td style="padding:6px 10px;color:#94a3b8;font-weight:bold;border-bottom:1px solid #334155">IBS</td><td style="padding:6px 10px;color:#cbd5e1;border-bottom:1px solid #334155">' + ((p.ibs_info && p.ibs_info.subtype) || 'N/A') + '</td><td style="padding:6px 10px;color:#94a3b8;font-weight:bold;border-bottom:1px solid #334155">Severity</td><td style="padding:6px 10px;color:#cbd5e1;border-bottom:1px solid #334155">' + ((p.ibs_info && p.ibs_info.severity_level) || 'N/A') + '</td></tr>';
-        pagesHtml += '</table>';
-        if (bi) pagesHtml += '<div style="margin-top:10px"><div style="font-size:11px;color:#94a3b8;margin-bottom:5px;font-weight:bold">📈 Bacteria to Increase</div><div>' + bi + '</div></div>';
-        if (bd) pagesHtml += '<div style="margin-top:10px"><div style="font-size:11px;color:#94a3b8;margin-bottom:5px;font-weight:bold">📉 Bacteria to Decrease</div><div>' + bd + '</div></div>';
-        if (av) pagesHtml += '<div style="margin-top:10px"><div style="font-size:11px;color:#94a3b8;margin-bottom:5px;font-weight:bold">🚫 Avoid List</div><div>' + av + '</div></div>';
-        pagesHtml += '</div>';
-        pagesHtml += '<div style="background:#1e293b;border-radius:8px;padding:14px 18px;color:#94a3b8;font-size:11px;line-height:1.7">This personalized meal plan is AI-generated from your IOM gut microbiome report. Each day provides balanced Indian meals to support beneficial bacteria while avoiding trigger foods.</div>';
-        pagesHtml += '<div style="text-align:center;font-size:8px;color:#475569;margin-top:16px;padding-top:8px;border-top:1px solid #1e293b">NutriGenie by IOM Bioworks · Page 1 of 8</div>';
-        pagesHtml += '</div>';
-    }
+        function fillPage() {
+            doc.setFillColor(...BG);
+            doc.rect(0, 0, PW, PH, 'F');
+        }
 
-    // === PAGES 2-8: Days ===
-    for (let d = 1; d <= 7; d++) {
-        const day = mealPlanData['day_' + d];
-        if (!day) continue;
+        function newPage() {
+            doc.addPage();
+            pageNum++;
+            fillPage();
+            y = TM;
+        }
 
-        const allKeys = Object.keys(day).filter(k => day[k] && typeof day[k] === 'object' && 'total_calories' in day[k]);
-        const sorted = sortedMealKeys(day, allKeys);
-        let tC = 0, tP = 0, tCb = 0, tF = 0, tFb = 0;
+        function checkY(needed) {
+            if (y + needed > PH - 14) newPage();
+        }
 
-        // Day page wrapper
-        const isLast = (d === 7);
-        pagesHtml += '<div style="' + (isLast ? '' : 'page-break-after:always;') + 'padding:40px 36px;background:#0f172a;color:#e2e8f0;font-family:Arial,sans-serif;width:794px;min-height:1100px">';
+        function setTxt(size, color, bold) {
+            doc.setFontSize(size);
+            doc.setTextColor(...color);
+            doc.setFont('helvetica', bold ? 'bold' : 'normal');
+        }
 
-        // Day header
-        pagesHtml += '<div style="display:flex;align-items:center;gap:12px;border-bottom:3px solid #4f46e5;padding-bottom:8px;margin-bottom:14px">';
-        pagesHtml += '<span style="font-size:11px;color:#a5b4fc;background:#312e81;padding:4px 10px;border-radius:5px;font-weight:700;border:1px solid #4f46e5">Day ' + d + '</span>';
-        pagesHtml += '<span style="font-size:20px;font-weight:700;color:#818cf8;flex:1">' + dayNames[d - 1] + '</span>';
-        pagesHtml += '<span style="font-size:9px;color:#64748b">Kit: ' + kitId + '</span>';
-        pagesHtml += '</div>';
+        function fmtQty(i) {
+            if (!i || typeof i.quantity_g !== 'number') return '';
+            return i.quantity_g + (i.unit || 'g');
+        }
 
-        // Meals
-        sorted.forEach(function (type) {
-            const m = day[type];
-            if (!m) return;
-            const cal = m.total_calories || 0, pro = m.protein_g || 0, carb = m.carbs_g || 0, fat = m.fat_g || 0, fib = m.fiber_g || 0;
-            tC += cal; tP += pro; tCb += carb; tF += fat; tFb += fib;
-            const ings = (m.ingredients || []).map(function (i) {
-                const n = i.name || i;
-                const q = fq(i);
-                return q ? n + ' (' + q + ')' : n;
-            }).join(', ');
-            const lbl = (window.customLabels && window.customLabels[type]) || ML[type] || type.replace(/_/g, ' ');
-            const sd = type.includes('_side_');
+        function drawBadge(label, bx, by, bgCol, txtCol) {
+            const cleanLabel = (label || '').replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F900}-\u{1F9FF}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}➕✏️]/gu, '').trim();
+            doc.setFontSize(7);
+            doc.setFont('helvetica','bold');
+            const tw = doc.getTextWidth(cleanLabel) + 5;
+            doc.setFillColor(...bgCol);
+            doc.roundedRect(bx, by - 3.8, tw, 5.2, 1, 1, 'F');
+            doc.setTextColor(...txtCol);
+            doc.text(cleanLabel, bx + 2.5, by);
+            return tw + 2;
+        }
+        
+        // Helper to prevent jsPDF from garbling standard text with emojis
+        function cleanText(str) {
+            if (!str) return '';
+            return str.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F900}-\u{1F9FF}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}➕✏️🍲🔥📊📈📉🚫]/gu, '').trim();
+        }
 
-            const bgCol = sd ? '#1a2235' : '#1e293b';
-            const bdLeft = sd ? 'border-left:3px solid #d97706;margin-left:14px;' : '';
-            const badgeBg = sd ? '#78350f' : '#312e81';
-            const badgeCol = sd ? '#fbbf24' : '#a5b4fc';
+        // ── PAGE 1: Cover + Profile ─────────────────────────
+        fillPage();
 
-            pagesHtml += '<div style="background:' + bgCol + ';border:1px solid #334155;border-radius:8px;padding:10px 14px;margin-bottom:8px;' + bdLeft + '">';
-            pagesHtml += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">';
-            pagesHtml += '<span style="background:' + badgeBg + ';color:' + badgeCol + ';font-size:9px;padding:3px 8px;border-radius:4px;font-weight:700">' + lbl + '</span>';
-            pagesHtml += '<span style="font-size:13px;font-weight:bold;flex:1;color:#f1f5f9">' + (m.name || '') + '</span>';
-            pagesHtml += '<span style="background:#064e3b;color:#34d399;font-size:10px;padding:3px 9px;border-radius:4px;font-weight:700;border:1px solid #065f46">' + cal + ' kcal</span>';
-            pagesHtml += '</div>';
-            if (m.benefits) pagesHtml += '<div style="font-size:9px;color:#34d399;margin:3px 0">' + m.benefits + '</div>';
-            pagesHtml += '<div style="font-size:10px;color:#94a3b8;margin:4px 0;line-height:1.6"><span style="font-weight:bold;color:#6b7280">Ingredients:</span> ' + ings + '</div>';
-            pagesHtml += '<div style="display:flex;gap:8px;font-size:9px;margin-top:4px">';
-            pagesHtml += '<span style="background:#0d1526;padding:3px 7px;border-radius:4px;color:#94a3b8;border:1px solid #1e293b">P: ' + pro + 'g</span>';
-            pagesHtml += '<span style="background:#0d1526;padding:3px 7px;border-radius:4px;color:#94a3b8;border:1px solid #1e293b">C: ' + carb + 'g</span>';
-            pagesHtml += '<span style="background:#0d1526;padding:3px 7px;border-radius:4px;color:#94a3b8;border:1px solid #1e293b">F: ' + fat + 'g</span>';
-            pagesHtml += '<span style="background:#0d1526;padding:3px 7px;border-radius:4px;color:#94a3b8;border:1px solid #1e293b">Fiber: ' + fib + 'g</span>';
-            pagesHtml += '</div></div>';
-        });
+        // Header bar
+        doc.setFillColor(79, 70, 229);
+        doc.rect(0, 0, PW, 22, 'F');
+        setTxt(13, [255,255,255], true);
+        doc.text('NutriGenie  -  7-Day Personalized Meal Plan', LM, 13);
+        setTxt(7.5, [200,200,230], false);
+        doc.text('IOM Bioworks  |  Kit: ' + kitId + '  |  ' + new Date().toLocaleDateString('en-IN'), LM, 19);
+        y = 30;
 
-        // Day summary
-        pagesHtml += '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;padding:8px 14px;background:#1e293b;border-radius:6px;border:1px solid #334155;font-size:10px;color:#94a3b8">';
-        pagesHtml += '<span style="font-weight:700;color:#818cf8">📊 Daily Totals:</span>';
-        pagesHtml += '<span style="background:#0d1526;padding:3px 8px;border-radius:4px;border:1px solid #1e293b">🔥 ' + tC + ' kcal</span>';
-        pagesHtml += '<span style="background:#0d1526;padding:3px 8px;border-radius:4px;border:1px solid #1e293b">Protein: ' + tP + 'g</span>';
-        pagesHtml += '<span style="background:#0d1526;padding:3px 8px;border-radius:4px;border:1px solid #1e293b">Carbs: ' + tCb + 'g</span>';
-        pagesHtml += '<span style="background:#0d1526;padding:3px 8px;border-radius:4px;border:1px solid #1e293b">Fat: ' + tF + 'g</span>';
-        pagesHtml += '<span style="background:#0d1526;padding:3px 8px;border-radius:4px;border:1px solid #1e293b">Fiber: ' + tFb + 'g</span>';
-        pagesHtml += '</div>';
+        if (patientProfile) {
+            const p = patientProfile;
+            // Section heading
+            setTxt(11, ACCENT, true);
+            doc.text('Patient Profile', LM, y); y += 6;
+            doc.setDrawColor(...ACCENT);
+            doc.setLineWidth(0.5);
+            doc.line(LM, y, LM+CW, y); y += 5;
 
-        // Footer
-        pagesHtml += '<div style="text-align:center;font-size:8px;color:#475569;margin-top:16px;padding-top:8px;border-top:1px solid #1e293b">NutriGenie by IOM Bioworks · Page ' + (d + 1) + ' of 8</div>';
-        pagesHtml += '</div>';
-    }
+            // Profile 2-col grid
+            const fields = [
+                ['Kit ID', p.kit_id||'N/A'],   ['Age', p.age||'N/A'],
+                ['Gender', p.gender||'N/A'],   ['BMI', p.bmi||'N/A'],
+                ['Diet', p.diet_type||'Veg'],  ['Location', p.location||'N/A'],
+                ['IBS Type', (p.ibs_info&&p.ibs_info.subtype)||'N/A'],
+                ['Severity', (p.ibs_info&&p.ibs_info.severity_level)||'N/A'],
+            ];
+            const colW = CW / 2;
+            const rowH = 7;
+            fields.forEach(([k,v], i) => {
+                const cx = LM + (i%2)*colW;
+                const ry = y + Math.floor(i/2)*rowH;
+                setTxt(8, MUTED, true);  doc.text(k+':', cx, ry);
+                setTxt(8, WHITE, false); doc.text(String(v), cx+24, ry);
+            });
+            y += Math.ceil(fields.length/2)*rowH + 5;
 
-    // ── Generate PDF using html2pdf from HTML string ──
-    var el = document.createElement('div');
-    el.style.cssText = 'width:794px;';
-    el.innerHTML = pagesHtml;
-    document.body.appendChild(el);
+            // NIN RDA box
+            const isFem = (p.gender||'').toLowerCase().startsWith('f');
+            const RDA = isFem
+                ? {cal:2230,pro:55,carb:335,fat:60,fib:30,lbl:'Reference Woman'}
+                : {cal:2730,pro:60,carb:410,fat:73,fib:30,lbl:'Reference Man'};
+            doc.setFillColor(...BG2);
+            doc.roundedRect(LM, y, CW, 15, 2, 2, 'F');
+            doc.setFillColor(...ACCENT);
+            doc.rect(LM, y, 2.5, 15, 'F');
+            setTxt(8, ACCENT, true);
+            doc.text('NIN RDA ('+RDA.lbl+')', LM+6, y+5.5);
+            setTxt(7.5, MUTED, false);
+            doc.text('Calories: '+RDA.cal+' kcal  |  Protein: '+RDA.pro+'g  |  Carbs: '+RDA.carb+'g  |  Fat: '+RDA.fat+'g  |  Fiber: '+RDA.fib+'g', LM+6, y+12);
+            y += 20;
 
-    html2pdf().set({
-        margin: 0,
-        filename: kitId + '_Meal_Plan.pdf',
-        image: { type: 'jpeg', quality: 0.95 },
-        html2canvas: { scale: 2, backgroundColor: '#0f172a', useCORS: true, logging: false, width: 794 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: ['css'] }
-    }).from(el).save().then(function () {
-        document.body.removeChild(el);
+            // Bacteria to increase
+            const bInc = (p.bacteria_to_increase||[]).filter(b=>b.name&&!b.name.includes('Other')).slice(0,6);
+            if (bInc.length) {
+                setTxt(8, MUTED, true); doc.text('Bacteria to Increase:', LM, y); y += 5;
+                let bx = LM;
+                bInc.forEach(b => {
+                    if (bx + doc.getTextWidth(b.name) + 10 > LM+CW) { bx=LM; y+=6; }
+                    bx += drawBadge(b.name, bx, y, [5,46,22], GREEN);
+                });
+                y += 8;
+            }
+
+            // Bacteria to decrease
+            const bDec = (p.bacteria_to_decrease||[]).filter(b=>b.name&&!b.name.includes('Other')).slice(0,5);
+            if (bDec.length) {
+                setTxt(8, MUTED, true); doc.text('Bacteria to Decrease:', LM, y); y += 5;
+                let bx = LM;
+                bDec.forEach(b => {
+                    if (bx + doc.getTextWidth(b.name) + 10 > LM+CW) { bx=LM; y+=6; }
+                    bx += drawBadge(b.name, bx, y, [30,58,95], [96,165,250]);
+                });
+                y += 8;
+            }
+
+            // Avoid list
+            const avList = p.avoid_list||[];
+            if (avList.length) {
+                setTxt(8, MUTED, true); doc.text('Avoid List:', LM, y); y += 5;
+                let bx = LM;
+                avList.forEach(a => {
+                    if (bx + doc.getTextWidth(a) + 10 > LM+CW) { bx=LM; y+=6; }
+                    bx += drawBadge(a, bx, y, [69,10,10], [248,113,113]);
+                });
+                y += 8;
+            }
+
+            // Note
+            checkY(12);
+            doc.setFillColor(...BG2);
+            doc.roundedRect(LM, y, CW, 12, 2, 2, 'F');
+            setTxt(7.5, MUTED, false);
+            const noteLines = doc.splitTextToSize('This meal plan is AI-generated from your IOM gut microbiome report. Each day provides balanced Indian meals to support beneficial bacteria while avoiding trigger foods.', CW-6);
+            doc.text(noteLines, LM+3, y+5);
+            y += 14;
+        }
+
+        // Page footer
+        setTxt(7, MUTED, false);
+        doc.text('Page 1 of 8  |  NutriGenie by IOM Bioworks', PW/2, PH-6, {align:'center'});
+
+        // ── PAGES 2-8: One page per day ──────────────────────
+        for (let d = 1; d <= 7; d++) {
+            const day = mealPlanData['day_'+d];
+            if (!day) continue;
+            newPage();
+
+            // Day header bar
+            doc.setFillColor(49, 46, 129);
+            doc.rect(0, 0, PW, 20, 'F');
+            setTxt(14, ACCENT, true);
+            doc.text('Day '+d+'  -  '+dayNames[d-1], LM, 13);
+            setTxt(8, [165,180,252], false);
+            doc.text('Kit: '+kitId, PW-RM, 13, {align:'right'});
+            y = 28;
+
+            const allKeys = Object.keys(day).filter(k => day[k] && typeof day[k]==='object' && 'total_calories' in day[k]);
+            const sorted = sortedMealKeys(day, allKeys);
+            let tC=0, tP=0, tCb=0, tF=0, tFb=0;
+
+            sorted.forEach(function(type) {
+                const m = day[type];
+                if (!m) return;
+                const cal  = m.total_calories||0;
+                const pro  = m.protein_g||0;
+                const carb = m.carbs_g||0;
+                const fat  = m.fat_g||0;
+                const fib  = m.fiber_g||0;
+                tC+=cal; tP+=pro; tCb+=carb; tF+=fat; tFb+=fib;
+
+                const isSide = type.includes('_side_');
+                // FIXED: Replace emojis from labels to prevent jsPDF garbling (WinAnsiEncoding error)
+                let rawLbl = (window.customLabels&&window.customLabels[type]) || MEAL_LABELS[type] || type.replace(/_/g,' ');
+                if (isSide && rawLbl.includes('➕')) {
+                    rawLbl = rawLbl.replace('➕', '+');
+                }
+                const lbl = cleanText(rawLbl);
+                const ingStr = (m.ingredients||[]).map(i => {
+                    const q = fmtQty(i); return cleanText(i.name) + (q ? ' ('+q+')' : '');
+                }).join(', ');
+
+                const indentX = isSide ? LM+6 : LM;
+                const cardW   = isSide ? CW-6 : CW;
+
+                // estimate wrapped ingredient lines
+                doc.setFontSize(7.5);
+                const ingWrapped = doc.splitTextToSize(ingStr, cardW-8);
+                const nameWrapped = doc.splitTextToSize(cleanText(m.name||''), cardW-8);
+                const cardH = 7 + nameWrapped.length*5 + ingWrapped.length*4.5 + 9;
+
+                checkY(cardH+3);
+
+                // Card
+                doc.setFillColor(...BG2);
+                doc.roundedRect(indentX, y, cardW, cardH, 1.5, 1.5, 'F');
+                doc.setDrawColor(...BORDER);
+                doc.setLineWidth(0.2);
+                doc.roundedRect(indentX, y, cardW, cardH, 1.5, 1.5, 'S');
+
+                // Side dish left bar
+                if (isSide) {
+                    doc.setFillColor(217,119,6);
+                    doc.rect(indentX, y, 2.5, cardH, 'F');
+                }
+
+                // Meal type badge
+                const badgeBg  = isSide ? [120,53,15]  : [49,46,129];
+                const badgeTxt = isSide ? [251,191,36]  : [165,180,252];
+                drawBadge(lbl, indentX+4, y+5, badgeBg, badgeTxt);
+
+                // Calories badge right
+                const calStr = cal+' kcal';
+                doc.setFontSize(7.5); doc.setFont('helvetica','bold');
+                const calTW = doc.getTextWidth(calStr)+5;
+                doc.setFillColor(6,78,59);
+                doc.roundedRect(indentX+cardW-calTW-3, y+1.5, calTW, 5.2, 1, 1, 'F');
+                doc.setTextColor(...GREEN);
+                doc.text(calStr, indentX+cardW-calTW-1, y+5.5);
+
+                // Dish name
+                let cy = y+9;
+                setTxt(9.5, WHITE, true);
+                doc.text(nameWrapped, indentX+4, cy);
+                cy += nameWrapped.length*5;
+
+                // Ingredients
+                setTxt(7.5, [107,114,128], true);
+                doc.text('Ingredients: ', indentX+4, cy);
+                const labelW = doc.getTextWidth('Ingredients: ');
+                setTxt(7.5, MUTED, false);
+                // first line beside label
+                if (ingWrapped.length>0) doc.text(ingWrapped[0], indentX+4+labelW, cy);
+                for (let li=1; li<ingWrapped.length; li++) {
+                    cy+=4.5; doc.text(ingWrapped[li], indentX+4, cy);
+                }
+                cy+=5;
+
+                // Macro pills
+                const macros=[['P',pro+'g',[99,102,241]],['C',carb+'g',[245,158,11]],['F',fat+'g',[239,68,68]],['Fb',fib+'g',[16,185,129]]];
+                let mx=indentX+4;
+                macros.forEach(([lbl2,val,col])=>{
+                    doc.setFontSize(7);
+                    const pw = doc.getTextWidth(lbl2+':'+val)+5;
+                    doc.setFillColor(13,21,38);
+                    doc.roundedRect(mx, cy-3.5, pw, 4.8, 0.8, 0.8, 'F');
+                    doc.setTextColor(...col); doc.setFont('helvetica','bold');
+                    doc.text(lbl2+':', mx+1.5, cy);
+                    doc.setTextColor(...WHITE); doc.setFont('helvetica','normal');
+                    doc.text(val, mx+1.5+doc.getTextWidth(lbl2+':'), cy);
+                    mx+=pw+2;
+                });
+
+                y += cardH+3;
+            });
+
+            // Daily totals
+            checkY(18);
+            const isFemD = (patientProfile&&(patientProfile.gender||'').toLowerCase().startsWith('f'));
+            const RDAD = isFemD
+                ? {cal:2230,pro:55,carb:335,fat:60,fib:30,lbl:'Ref. Woman'}
+                : {cal:2730,pro:60,carb:410,fat:73,fib:30,lbl:'Ref. Man'};
+            doc.setFillColor(...BG2);
+            doc.roundedRect(LM, y, CW, 17, 2, 2, 'F');
+            doc.setFillColor(...ACCENT);
+            doc.rect(LM, y, 2.5, 17, 'F');
+            setTxt(8, ACCENT, true);
+            doc.text('Daily Totals  vs  NIN RDA ('+RDAD.lbl+')', LM+6, y+6);
+            setTxt(7.5, MUTED, false);
+            doc.text('Cal: '+tC+'/'+RDAD.cal+' kcal   Prot: '+tP+'/'+RDAD.pro+'g   Carbs: '+tCb+'/'+RDAD.carb+'g   Fat: '+tF+'/'+RDAD.fat+'g   Fiber: '+tFb+'/'+RDAD.fib+'g', LM+6, y+13);
+            y+=20;
+
+            // Footer
+            setTxt(7, MUTED, false);
+            doc.text('Page '+(d+1)+' of 8  |  NutriGenie by IOM Bioworks', PW/2, PH-6, {align:'center'});
+        }
+
+        doc.save(kitId+'_Meal_Plan.pdf');
         showToast('✅ PDF Downloaded!', 'success');
-    }).catch(function (err) {
+
+    } catch(err) {
         console.error('PDF error:', err);
-        document.body.removeChild(el);
-        showToast('❌ PDF failed — please try again.', 'error');
-    });
+        showToast('❌ PDF failed: '+err.message, 'error', 8000);
+    }
 }
+
 
 // ═══ Yes-List Food Chooser (ingredient-based, rotates by day) ═══
 function getMealCategory(mealType) {
@@ -924,52 +1289,90 @@ function getIngredientForDayAndMeal(dayKey, mealCategory) {
 
 function openYesListChooser(dayKey, mealType) {
     const category = getMealCategory(mealType);
-    const ingredientKey = getIngredientForDayAndMeal(dayKey, category);
-    const ingredientData = INGREDIENT_DISH_MAP[ingredientKey] || INGREDIENT_DISH_MAP['_default'];
-    const rawFoods = ingredientData[category] || ingredientData.lunch || ingredientData.dinner || [];
-    // Include _default foods for extra variety, skip duplicates
-    const defaultFoods = (INGREDIENT_DISH_MAP['_default'][category] || []).filter(
-        df => !rawFoods.some(f => f.name === df.name)
-    );
-    const foods = [...rawFoods, ...defaultFoods];
-    if (!foods.length) { showToast('⚠️ No suggestions available.', 'error'); return; }
 
-    const categoryLabels = { breakfast: '🌅 Breakfast', lunch: '☀️ Lunch', snack: '🍎 Snack', dinner: '🌙 Dinner' };
-    const dayNum = parseInt(dayKey.replace('day_', ''));
-    const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    const dayLabel = dayNames[dayNum - 1] || dayKey;
+    // Collect ALL dishes across every ingredient for this meal category
+    const patientKeys = getPatientIngredientKeys();
+    const allIngKeys  = [...new Set([...patientKeys, ...Object.keys(INGREDIENT_DISH_MAP)])];
 
-    let html = `< div class="modal-overlay" id = "yesListModal" onclick = "if(event.target===this)closeYesListModal()" >
-    <div class="modal-card" style="max-height:80vh;overflow-y:auto;width:480px">
-        <div class="modal-header">
-            <h3>🥗 ${categoryLabels[category] || 'Meal'} — ${dayLabel} Yes-List</h3>
-            <button class="modal-close" onclick="closeYesListModal()">✕</button>
-        </div>
-        <p style="padding:4px 20px 10px;font-size:0.76rem;color:var(--text-muted)">
-            Today's featured ingredient: <strong style="color:var(--success)">${ingredientData.label}</strong><br>
-                Tap any dish to replace the current ${category} with it.
-        </p>
-        <div class="modal-body" style="padding:6px 14px">`;
+    const groups = [];
+    const seenNames = new Set();
 
-    foods.forEach((f, i) => {
-        html += `<div onclick="replaceWithYesListFood('${dayKey}','${mealType}',${i})" style="
-            background:var(--bg-glass); border:1px solid var(--border); border-radius:8px;
-            padding:10px 13px; margin-bottom:6px; cursor:pointer; transition:all 0.2s;"
-            onmouseover="this.style.borderColor='#10b981';this.style.transform='translateX(4px)'"
-            onmouseout="this.style.borderColor='var(--border)';this.style.transform='none'">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-                <strong style="font-size:0.9rem">${esc(f.name)}</strong>
-                <span style="font-size:0.75rem;color:#10b981;background:rgba(16,185,129,0.12);padding:2px 8px;border-radius:6px">${f.cal} kcal</span>
-            </div>
-            <div style="font-size:0.72rem;color:var(--text-muted);margin-top:3px">${esc(f.ings)}</div>
-            <div style="display:flex;gap:10px;margin-top:4px;font-size:0.68rem;color:var(--text-secondary)">
-                <span>P:${f.pro}g</span> <span>C:${f.carb}g</span> <span>F:${f.fat}g</span>
-            </div>
-        </div>`;
+    allIngKeys.forEach(key => {
+        if (key === '_default') return;
+        const map = INGREDIENT_DISH_MAP[key];
+        if (!map) return;
+        const dishes = map[category] || [];
+        if (!dishes.length) return;
+        const unique = dishes.filter(d => !seenNames.has(d.name));
+        if (!unique.length) return;
+        unique.forEach(d => seenNames.add(d.name));
+        const isYesList = patientKeys.includes(key);
+        groups.push({ label: map.label, key, foods: unique, isYesList });
     });
 
-    html += `</div></div></div > `;
-    window._yesListFoods = foods;
+    // Yes-list groups first
+    groups.sort((a, b) => (b.isYesList ? 1 : 0) - (a.isYesList ? 1 : 0));
+
+    // Add _default dishes not yet seen
+    const defaultDishes = (INGREDIENT_DISH_MAP['_default'][category] || []).filter(d => !seenNames.has(d.name));
+    if (defaultDishes.length) {
+        groups.push({ label: 'Gut Health Classics', key: '_default', foods: defaultDishes, isYesList: false });
+    }
+
+    const allFoods = groups.flatMap(g => g.foods);
+    if (!allFoods.length) { showToast('⚠️ No suggestions available.', 'error'); return; }
+
+    const categoryLabels = { breakfast: '🌅 Breakfast', lunch: '☀️ Lunch', snack: '🍎 Snack', dinner: '🌙 Dinner' };
+    const dayNum   = parseInt(dayKey.replace('day_', ''));
+    const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const dayLabel = dayNames[dayNum - 1] || dayKey;
+    const totalCount = allFoods.length;
+
+    let html = `<div class="modal-overlay" id="yesListModal" onclick="if(event.target===this)closeYesListModal()">
+    <div class="modal-card" style="max-height:85vh;overflow-y:auto;width:520px">
+        <div class="modal-header">
+            <h3>🥗 ${categoryLabels[category] || 'Meal'} Alternatives — ${dayLabel}</h3>
+            <button class="modal-close" onclick="closeYesListModal()">✕</button>
+        </div>
+        <p style="padding:4px 20px 8px;font-size:0.76rem;color:var(--text-muted)">
+            <strong style="color:var(--success)">${totalCount} options</strong> across
+            <strong>${groups.length} food groups</strong> — tap any dish to replace the current ${category}.
+        </p>`;
+
+    let globalIndex = 0;
+    groups.forEach(group => {
+        html += `<div style="padding:6px 14px 0">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;padding:4px 0;border-bottom:1px solid var(--border)">
+                ${group.isYesList
+                    ? `<span style="font-size:0.65rem;background:rgba(16,185,129,0.15);color:#10b981;border:1px solid #10b981;padding:1px 6px;border-radius:4px;font-weight:700">✓ YES LIST</span>`
+                    : `<span style="font-size:0.65rem;background:var(--bg-glass);color:var(--text-muted);border:1px solid var(--border);padding:1px 6px;border-radius:4px">ALTERNATIVE</span>`
+                }
+                <span style="font-size:0.8rem;font-weight:600;color:var(--text-primary)">${esc(group.label)}</span>
+                <span style="font-size:0.7rem;color:var(--text-muted);margin-left:auto">${group.foods.length} option${group.foods.length > 1 ? 's' : ''}</span>
+            </div>`;
+
+        group.foods.forEach(f => {
+            const idx = globalIndex++;
+            html += `<div onclick="replaceWithYesListFood('${dayKey}','${mealType}',${idx})"
+                style="background:var(--bg-glass);border:1px solid var(--border);border-radius:8px;
+                       padding:10px 13px;margin-bottom:6px;cursor:pointer;transition:all 0.2s;"
+                onmouseover="this.style.borderColor='#10b981';this.style.transform='translateX(3px)'"
+                onmouseout="this.style.borderColor='var(--border)';this.style.transform='none'">
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                    <strong style="font-size:0.88rem">${esc(f.name)}</strong>
+                    <span style="font-size:0.74rem;color:#10b981;background:rgba(16,185,129,0.12);padding:2px 8px;border-radius:6px;white-space:nowrap">${f.cal} kcal</span>
+                </div>
+                <div style="font-size:0.71rem;color:var(--text-muted);margin-top:3px;line-height:1.4">${esc(f.ings)}</div>
+                <div style="display:flex;gap:10px;margin-top:4px;font-size:0.68rem;color:var(--text-secondary)">
+                    <span>Protein: ${f.pro}g</span><span>Carbs: ${f.carb}g</span><span>Fat: ${f.fat}g</span>
+                </div>
+            </div>`;
+        });
+        html += `</div>`;
+    });
+
+    html += `</div></div></div>`;
+    window._yesListFoods = allFoods;
     document.body.insertAdjacentHTML('beforeend', html);
 }
 
@@ -982,25 +1385,31 @@ function replaceWithYesListFood(dayKey, mealType, foodIndex) {
     const f = window._yesListFoods && window._yesListFoods[foodIndex];
     if (!f || !(mealPlanData && mealPlanData[dayKey])) return;
 
-    const ingredientKey = getIngredientForDayAndMeal(dayKey, getMealCategory(mealType));
-    const ingredientData = INGREDIENT_DISH_MAP[ingredientKey] || {};
+    // Find which ingredient this dish belongs to for the benefits label
+    let ingredientLabel = 'IOM yes-list recommendation';
+    Object.entries(INGREDIENT_DISH_MAP).forEach(([key, map]) => {
+        const allDishes = [...(map.breakfast||[]), ...(map.lunch||[]), ...(map.dinner||[]), ...(map.snack||[])];
+        if (allDishes.some(d => d.name === f.name)) {
+            ingredientLabel = map.label || ingredientLabel;
+        }
+    });
 
     const newMeal = {
         name: f.name,
-        ingredients: (f.ings || '').split(',').map(ing => ({ name: ing.trim(), quantity_g: 'as needed' })),
+        ingredients: parseIngredientString(f.ings || ''),
         total_calories: f.cal,
         protein_g: f.pro,
         carbs_g: f.carb,
         fat_g: f.fat || 0,
         fiber_g: 3,
         prep_time_min: 15,
-        benefits: `From yes - list ingredient: ${ingredientData.label || 'IOM recommendation'} `
+        benefits: `From yes-list: ${ingredientLabel}`
     };
 
     mealPlanData[dayKey][mealType] = newMeal;
     closeYesListModal();
     renderDay(dayKey);
-    autosavePlan();  // persist modification to localStorage + backend
+    autosavePlan();
     showToast(`✅ Replaced with "${f.name}"!`, 'success');
 }
 
@@ -1008,8 +1417,8 @@ function replaceWithYesListFood(dayKey, mealType, foodIndex) {
 async function apiCall(endpoint, method = 'GET', body = null) {
     const opts = { method, headers: { 'Content-Type': 'application/json' } };
     if (body && method !== 'GET') opts.body = JSON.stringify(body);
-    const res = await fetch(`${API_URL}${endpoint} `, opts);
-    if (!res.ok) { const err = await res.json().catch(() => ({})); throw new Error(err.error || `HTTP ${res.status} `); }
+    const res = await fetch(`${API_URL}${endpoint}`, opts);
+    if (!res.ok) { const err = await res.json().catch(() => ({})); throw new Error(err.error || `HTTP ${res.status}`); }
     return res.json();
 }
 
@@ -1020,7 +1429,7 @@ function setLoading(on) {
     $('spinner').classList.toggle('hidden', !on);
 }
 function setStatus(type, text) {
-    document.querySelector('.status-dot').className = `status - dot ${type} `;
+    document.querySelector('.status-dot').className = `status-dot ${type}`;
     document.querySelector('.status-text').textContent = text;
 }
 function esc(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
@@ -1058,7 +1467,7 @@ function autosavePlan() {
 
     // 1. Always save to localStorage (works offline too)
     try {
-        localStorage.setItem(`${STORAGE_KEY}_${kitId} `, JSON.stringify(snapshot));
+        localStorage.setItem(`${STORAGE_KEY}_${kitId}`, JSON.stringify(snapshot));
     } catch (e) {
         console.warn('localStorage save failed:', e);
     }
@@ -1120,4 +1529,3 @@ function exportPlanAsJSON() {
     URL.revokeObjectURL(url);
     showToast('✅ Plan exported as JSON!', 'success');
 }
-
