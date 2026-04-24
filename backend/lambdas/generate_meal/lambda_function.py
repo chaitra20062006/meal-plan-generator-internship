@@ -334,13 +334,14 @@ def _generate_meal_plan(patient: dict, relevant_foods: list) -> dict:
 STRICT RULES:
 1. NEVER use any food from the AVOID LIST.
 2. Use ONLY foods from the PROVIDED NUTRITION DATABASE.
-3. Every meal must include exact quantities in grams.
-4. Every meal must include calories, protein_g, carbs_g, fat_g, fiber_g.
+3. Every ingredient MUST include an exact quantity in grams (e.g., 100).
+4. For accurate macros, output calories, protein_g, carbs_g, but know our backend calculates exact metrics from your ingredients.
 5. Daily total must be close to the calorie target (±10%).
 6. All meals must be traditional Indian household recipes.
 7. Output ONLY valid JSON. No explanations.
 8. Each day has 5 meals: breakfast, mid_morning_snack, lunch, evening_snack, dinner.
 9. For IBS patients: avoid gas-producing foods, prefer easy-to-digest meals.
+10. ACCOMPANIMENTS RULE: If a dry carbohydrate is generated (e.g., Dosa, Roti, Chapati, Idli, Paratha), you MUST pair it with a wet accompaniment (e.g., Dal, Sambar, Sabzi, Chutney). Combine them in the ingredient list!
 
 PATIENT PROFILE:
 - Diet: {patient['diet_type']}
@@ -451,6 +452,8 @@ def _enrich_with_nutrition(plan: dict, nutrition_data: list) -> dict:
             if not isinstance(meal, dict):
                 continue
 
+            meal_calc = {"cal": 0, "pro": 0, "carb": 0, "fat": 0, "fib": 0}
+
             # Enrich ingredients with nutrition data
             for ing in meal.get("ingredients", []):
                 food_id = ing.get("food_id", "")
@@ -462,19 +465,40 @@ def _enrich_with_nutrition(plan: dict, nutrition_data: list) -> dict:
 
                 if nutrition_info:
                     qty = ing.get("quantity_g", 100)
-                    multiplier = qty / 100.0
+                    multiplier = float(qty) / 100.0
+                    ing_cal = round(nutrition_info["per_100g"]["calories"] * multiplier, 1)
+                    ing_pro = round(nutrition_info["per_100g"]["protein_g"] * multiplier, 1)
+                    ing_carb = round(nutrition_info["per_100g"]["carbs_g"] * multiplier, 1)
+                    ing_fat = round(nutrition_info["per_100g"]["fat_g"] * multiplier, 1)
+                    ing_fib = round(nutrition_info["per_100g"]["fiber_g"] * multiplier, 1)
+
                     ing["nutrition_per_serving"] = {
-                        "calories": round(nutrition_info["per_100g"]["calories"] * multiplier, 1),
-                        "protein_g": round(nutrition_info["per_100g"]["protein_g"] * multiplier, 1),
-                        "carbs_g": round(nutrition_info["per_100g"]["carbs_g"] * multiplier, 1),
-                        "fat_g": round(nutrition_info["per_100g"]["fat_g"] * multiplier, 1),
-                        "fiber_g": round(nutrition_info["per_100g"]["fiber_g"] * multiplier, 1),
+                        "calories": ing_cal,
+                        "protein_g": ing_pro,
+                        "carbs_g": ing_carb,
+                        "fat_g": ing_fat,
+                        "fiber_g": ing_fib,
                     }
+                    
+                    meal_calc["cal"] += ing_cal
+                    meal_calc["pro"] += ing_pro
+                    meal_calc["carb"] += ing_carb
+                    meal_calc["fat"] += ing_fat
+                    meal_calc["fib"] += ing_fib
+
                     if nutrition_info.get("micronutrients"):
                         ing["micronutrients"] = {
                             k: round(v * multiplier, 2)
                             for k, v in nutrition_info["micronutrients"].items()
                         }
+            
+            # OVERRIDE LLM HALLUCINATED MACROS WITH STRICT EXACT MATH
+            if meal_calc["cal"] > 0:
+                meal["total_calories"] = int(meal_calc["cal"])
+                meal["protein_g"] = int(meal_calc["pro"])
+                meal["carbs_g"] = int(meal_calc["carb"])
+                meal["fat_g"] = int(meal_calc["fat"])
+                meal["fiber_g"] = round(meal_calc["fib"], 1)
 
             # Accumulate daily totals
             daily_totals["calories"] += meal.get("total_calories", 0)

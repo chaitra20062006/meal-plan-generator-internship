@@ -872,6 +872,20 @@ function confirmAddMeal() {
     renderDay(addMealDayTarget);
     closeAddMealModal();
     autosavePlan();  // persist modification to localStorage + backend
+    
+    // Save new side dish to the global custom recipes database
+    apiCall('/recipe', 'POST', {
+        name: newMeal.name,
+        ingredients: newMeal.ingredients,
+        total_calories: newMeal.total_calories,
+        protein_g: newMeal.protein_g,
+        carbs_g: newMeal.carbs_g,
+        fat_g: newMeal.fat_g,
+        fiber_g: newMeal.fiber_g,
+        benefits: newMeal.benefits,
+        created_by: "Nutritionist (" + ($('kitId').value || 'Unknown') + ")"
+    }).catch(e => console.error("Could not save recipe globally:", e));
+
     showToast(`✅ Added side dish: "${name}"`, 'success');
 }
 
@@ -919,6 +933,20 @@ function confirmEditMeal() {
     closeEditMealModal();
     renderDay(_editDay);
     autosavePlan();
+    
+    // Update side dish in the global custom recipes database
+    apiCall('/recipe', 'POST', {
+        name: meal.name,
+        ingredients: meal.ingredients,
+        total_calories: meal.total_calories,
+        protein_g: meal.protein_g,
+        carbs_g: meal.carbs_g,
+        fat_g: meal.fat_g,
+        fiber_g: meal.fiber_g,
+        benefits: meal.benefits,
+        created_by: "Nutritionist Edit (" + ($('kitId').value || 'Unknown') + ")"
+    }).catch(e => console.error("Could not update recipe globally:", e));
+    
     showToast(`✅ Updated: "${meal.name}"`, 'success');
 }
 

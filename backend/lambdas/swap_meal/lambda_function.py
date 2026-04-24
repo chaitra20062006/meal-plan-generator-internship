@@ -63,7 +63,8 @@ RULES:
 2. Use DIFFERENT primary ingredients from the rejected meal.
 3. Keep similar calorie count (±15%) and nutritional profile.
 4. Must be a traditional Indian household recipe.
-5. Output ONLY valid JSON. No explanations."""
+5. ACCOMPANIMENTS RULE: If a dry carbohydrate is generated (e.g., Dosa, Roti, Chapati, Idli, Paratha), you MUST pair it with a wet accompaniment (e.g., Dal, Sambar, Sabzi, Chutney). Combine them in the ingredient list!
+6. Output ONLY valid JSON. No explanations."""
 
         meal_labels = {
             "breakfast": "breakfast (7-8 AM)",
@@ -125,6 +126,45 @@ OUTPUT JSON:
         json_end = content.rfind("}") + 1
         if json_start >= 0 and json_end > json_start:
             new_meal = json.loads(content[json_start:json_end])
+            
+            # OVERRIDE LLM HALLUCINATED MACROS WITH STRICT EXACT MATH
+            meal_calc = {"cal": 0, "pro": 0, "carb": 0, "fat": 0, "fib": 0}
+            food_lookup = {f["food_id"]: f for f in nutrition_data}
+            name_lookup = {f["name_en"].lower(): f for f in nutrition_data}
+            
+            for ing in new_meal.get("ingredients", []):
+                food_id = ing.get("food_id", "")
+                food_name = ing.get("name", "").lower()
+                
+                nutrition_info = food_lookup.get(food_id) or name_lookup.get(food_name)
+                
+                if nutrition_info:
+                    qty = ing.get("quantity_g", 100)
+                    multiplier = float(qty) / 100.0
+                    ing_cal = round(nutrition_info["per_100g"]["calories"] * multiplier, 1)
+                    ing_pro = round(nutrition_info["per_100g"]["protein_g"] * multiplier, 1)
+                    ing_carb = round(nutrition_info["per_100g"]["carbs_g"] * multiplier, 1)
+                    ing_fat = round(nutrition_info["per_100g"]["fat_g"] * multiplier, 1)
+                    ing_fib = round(nutrition_info["per_100g"]["fiber_g"] * multiplier, 1)
+                    
+                    ing["nutrition_per_serving"] = {
+                        "calories": ing_cal, "protein_g": ing_pro, "carbs_g": ing_carb,
+                        "fat_g": ing_fat, "fiber_g": ing_fib
+                    }
+                    
+                    meal_calc["cal"] += ing_cal
+                    meal_calc["pro"] += ing_pro
+                    meal_calc["carb"] += ing_carb
+                    meal_calc["fat"] += ing_fat
+                    meal_calc["fib"] += ing_fib
+
+            if meal_calc["cal"] > 0:
+                new_meal["total_calories"] = int(meal_calc["cal"])
+                new_meal["protein_g"] = int(meal_calc["pro"])
+                new_meal["carbs_g"] = int(meal_calc["carb"])
+                new_meal["fat_g"] = int(meal_calc["fat"])
+                new_meal["fiber_g"] = round(meal_calc["fib"], 1)
+                
         else:
             return _response(500, {"error": "AI failed to generate valid replacement"})
 

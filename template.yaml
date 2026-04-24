@@ -71,6 +71,19 @@ Resources:
         - AttributeName: created_at
           KeyType: RANGE
 
+  # ─── DynamoDB Table (Custom Recipes) ───────────────
+  CustomRecipesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub 'NutriGenieCustomRecipes-${AWS::AccountId}'
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: recipe_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: recipe_id
+          KeyType: HASH
+
   # ─── Lambda Functions ───────────────────────────────
   LoadPatientFunction:
     Type: AWS::Serverless::Function
@@ -158,6 +171,28 @@ Resources:
             - Effect: Allow
               Action: bedrock:InvokeModel
               Resource: '*'
+
+  SaveRecipeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: nutrigenie-save-recipe
+      CodeUri: backend/lambdas/save_recipe/
+      Handler: lambda_function.lambda_handler
+      MemorySize: 256
+      Timeout: 30
+      Environment:
+        Variables:
+          RECIPES_TABLE: !Ref CustomRecipesTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CustomRecipesTable
+      Events:
+        SaveRecipe:
+          Type: Api
+          Properties:
+            Path: /recipe
+            Method: POST
+            RestApiId: !Ref NutriGenieApi
 
   # ─── Lambda Layer (numpy) ──────────────────────────
   NumpyLayer:
