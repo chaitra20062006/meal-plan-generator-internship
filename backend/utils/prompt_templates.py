@@ -81,7 +81,9 @@ MEAL_PLAN_SYSTEM_PROMPT = """You are a certified Indian clinical nutritionist AI
 
 9. Include EXACT quantities in grams and complete nutritional breakdown per ingredient using values from the nutrition database.
 
-10. Output ONLY valid JSON matching the schema below. No explanations, no markdown.
+10. ACCOMPANIMENTS RULE: If a dry carbohydrate is generated (e.g., Dosa, Roti, Chapati, Idli, Paratha), you MUST pair it with appropriate wet accompaniments (e.g., Dal, Sambar, Sabzi, Chutney). Include accompaniments in the JSON list.
+
+11. Output ONLY valid JSON matching the schema below. No explanations, no markdown.
 
 ━━━ OUTPUT JSON SCHEMA ━━━
 {{
@@ -90,6 +92,8 @@ MEAL_PLAN_SYSTEM_PROMPT = """You are a certified Indian clinical nutritionist AI
       "meal_id": "D1-BF-001",
       "name": "Meal name in English",
       "name_regional": "Name in regional language",
+      "serving_size": "e.g., 2 dosas",
+      "accompaniments": ["Coconut Chutney", "Sambar"],
       "ingredients": [
         {{
           "name": "ingredient name",
@@ -166,13 +170,17 @@ ALTERNATIVE_SYSTEM_PROMPT = """You are a certified Indian clinical nutritionist 
 
 5. Use ONLY foods from the [NUTRITION DATABASE] provided below.
 
-6. Output ONLY valid JSON matching the single-meal schema. No explanations.
+6. ACCOMPANIMENTS RULE: If a dry carbohydrate is generated (e.g., Dosa, Roti, Chapati, Idli, Paratha), you MUST pair it with appropriate wet accompaniments (e.g., Dal, Sambar, Sabzi, Chutney). Include accompaniments in the JSON list.
+
+7. Output ONLY valid JSON matching the single-meal schema. No explanations.
 
 ━━━ OUTPUT JSON SCHEMA ━━━
 {{
   "meal_id": "ALT-{meal_type_code}-XXX",
   "name": "Meal name in English",
   "name_regional": "Regional language name",
+  "serving_size": "e.g., 1 bowl",
+  "accompaniments": ["Mint Chutney"],
   "ingredients": [
     {{
       "name": "ingredient name",

@@ -21,6 +21,7 @@ bedrock = boto3.client("bedrock-runtime")
 
 DATA_BUCKET = os.environ.get("DATA_BUCKET", "nutrigenie-data")
 LLM_MODEL_ID = os.environ.get("LLM_MODEL_ID", "amazon.nova-micro-v1:0")
+RECIPES_TABLE = os.environ.get("RECIPES_TABLE", "NutriGenieCustomRecipes")
 
 
 def lambda_handler(event, context):
@@ -63,7 +64,7 @@ RULES:
 2. Use DIFFERENT primary ingredients from the rejected meal.
 3. Keep similar calorie count (±15%) and nutritional profile.
 4. Must be a traditional Indian household recipe.
-5. ACCOMPANIMENTS RULE: If a dry carbohydrate is generated (e.g., Dosa, Roti, Chapati, Idli, Paratha), you MUST pair it with a wet accompaniment (e.g., Dal, Sambar, Sabzi, Chutney). Combine them in the ingredient list!
+5. ACCOMPANIMENTS RULE: If a dry carbohydrate is generated (e.g., Dosa, Roti, Chapati, Idli, Paratha), you MUST pair it with a wet accompaniment (e.g., Dal, Sambar, Sabzi, Chutney). Combine them in the ingredient list and include them in the 'accompaniments' list.
 6. Output ONLY valid JSON. No explanations."""
 
         meal_labels = {
@@ -92,6 +93,8 @@ Generate ONE replacement {meal_labels.get(meal_type, meal_type)} meal.
 OUTPUT JSON:
 {{
   "name": "...",
+  "serving_size": "e.g., 2 parathas",
+  "accompaniments": ["Curd", "Pickle"],
   "ingredients": [{{"name": "...", "quantity_g": 100}}],
   "total_calories": 400,
   "protein_g": 12,
@@ -167,6 +170,8 @@ OUTPUT JSON:
                 
         else:
             return _response(500, {"error": "AI failed to generate valid replacement"})
+            
+        _save_recipe_to_db(new_meal)
 
         return _response(200, {
             "day": day,
@@ -208,6 +213,45 @@ def _load_nutrition_data():
         return json.loads(obj["Body"].read().decode("utf-8"))
     except Exception:
         return []
+
+
+def _save_recipe_to_db(meal: dict):
+    """Save the newly generated swap meal to the custom recipes table."""
+    try:
+        import uuid
+        from datetime import datetime, timezone
+        from decimal import Decimal
+        
+        dynamodb = boto3.resource("dynamodb")
+        table = dynamodb.Table(RECIPES_TABLE)
+        
+        name = meal.get("name")
+        if not name:
+            return
+            
+        recipe_id = "RECIPE#" + str(uuid.uuid4())
+        
+        item_data = {
+            "recipe_id": recipe_id,
+            "name": name,
+            "ingredients": meal.get("ingredients", []),
+            "total_calories": meal.get("total_calories", 0),
+            "protein_g": meal.get("protein_g", 0),
+            "carbs_g": meal.get("carbs_g", 0),
+            "fat_g": meal.get("fat_g", 0),
+            "fiber_g": meal.get("fiber_g", 0),
+            "serving_size": meal.get("serving_size", "1 serving"),
+            "accompaniments": meal.get("accompaniments", []),
+            "benefits": meal.get("benefits", "AI Generated Swap Meal"),
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "created_by": "MealSwapGenerator"
+        }
+        
+        item_json = json.dumps(item_data)
+        item_dict = json.loads(item_json, parse_float=Decimal)
+        table.put_item(Item=item_dict)
+    except Exception as e:
+        logger.warning(f"Failed to save recipe to DB: {e}")
 
 
 def _response(status_code, body):

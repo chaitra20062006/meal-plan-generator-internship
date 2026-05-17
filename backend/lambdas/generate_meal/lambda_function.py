@@ -27,6 +27,7 @@ DATA_BUCKET = os.environ.get("DATA_BUCKET", "nutrigenie-data")
 LLM_MODEL_ID = os.environ.get("LLM_MODEL_ID", "amazon.nova-micro-v1:0")
 EMBEDDING_MODEL_ID = os.environ.get("EMBEDDING_MODEL_ID", "amazon.titan-embed-text-v2:0")
 MEAL_PLANS_TABLE = os.environ.get("MEAL_PLANS_TABLE", "NutriGenieMealPlans")
+RECIPES_TABLE = os.environ.get("RECIPES_TABLE", "NutriGenieCustomRecipes")
 
 # Cache for nutrition data (persists across warm Lambda invocations)
 _nutrition_cache = {"data": None, "embeddings": None, "texts": None}
@@ -59,7 +60,10 @@ def lambda_handler(event, context):
         # Step 5: Enrich with nutrition data
         enriched_plan = _enrich_with_nutrition(meal_plan, nutrition_data)
 
-        # Step 6: Save to DynamoDB
+        # Step 6: Save unique recipes to the database
+        _save_recipes_to_db(enriched_plan)
+
+        # Step 7: Save to DynamoDB
         _save_meal_plan_to_db(kit_id, patient, enriched_plan)
 
         return _response(200, {
@@ -341,7 +345,7 @@ STRICT RULES:
 7. Output ONLY valid JSON. No explanations.
 8. Each day has 5 meals: breakfast, mid_morning_snack, lunch, evening_snack, dinner.
 9. For IBS patients: avoid gas-producing foods, prefer easy-to-digest meals.
-10. ACCOMPANIMENTS RULE: If a dry carbohydrate is generated (e.g., Dosa, Roti, Chapati, Idli, Paratha), you MUST pair it with a wet accompaniment (e.g., Dal, Sambar, Sabzi, Chutney). Combine them in the ingredient list!
+10. ACCOMPANIMENTS RULE: If a dry carbohydrate is generated (e.g., Dosa, Roti, Chapati, Idli, Paratha), you MUST pair it with a wet accompaniment (e.g., Dal, Sambar, Sabzi, Chutney). Combine them in the ingredient list and include them in the 'accompaniments' list!
 
 PATIENT PROFILE:
 - Diet: {patient['diet_type']}
@@ -364,7 +368,7 @@ OUTPUT JSON SCHEMA:
 {{
   "calorie_target": {calorie_target},
   "day_1": {{
-    "breakfast": {{"name": "...", "ingredients": [{{"name": "...", "quantity_g": 100}}], "total_calories": 400, "protein_g": 12, "carbs_g": 50, "fat_g": 10, "fiber_g": 5, "prep_time_min": 15, "benefits": "..."}},
+    "breakfast": {{"name": "...", "serving_size": "e.g., 2 dosas", "accompaniments": ["..."], "ingredients": [{{"name": "...", "quantity_g": 100}}], "total_calories": 400, "protein_g": 12, "carbs_g": 50, "fat_g": 10, "fiber_g": 5, "prep_time_min": 15, "benefits": "..."}},
     "mid_morning_snack": {{...}},
     "lunch": {{...}},
     "evening_snack": {{...}},
@@ -421,6 +425,8 @@ def _generate_fallback_plan(patient: dict, foods: list, calorie_target: int) -> 
             food = safe_foods[day_num % len(safe_foods)] if safe_foods else {"name_en": "Rice", "per_100g": {"calories": 345, "protein_g": 7, "carbs_g": 78, "fat_g": 0.5, "fiber_g": 0.2}}
             plan[day_key][meal_type] = {
                 "name": f"{food['name_en']} {meal_type.replace('_', ' ')}",
+                "serving_size": "1 serving",
+                "accompaniments": [],
                 "ingredients": [{"name": food["name_en"], "quantity_g": 100}],
                 "total_calories": food["per_100g"]["calories"],
                 "protein_g": food["per_100g"]["protein_g"],
@@ -547,6 +553,58 @@ def _save_meal_plan_to_db(kit_id: str, patient: dict, meal_plan: dict):
         logger.error(f"Failed to save meal plan to DynamoDB: {e}")
         # We catch and log, but do not fail the generation response
         pass
+
+
+def _save_recipes_to_db(meal_plan: dict):
+    """Save unique generated meals to the custom recipes table."""
+    try:
+        import uuid
+        from datetime import datetime, timezone
+        from decimal import Decimal
+        
+        dynamodb = boto3.resource("dynamodb")
+        table = dynamodb.Table(RECIPES_TABLE)
+        saved_names = set()
+
+        for day_key in [f"day_{i}" for i in range(1, 8)]:
+            day = meal_plan.get(day_key, {})
+            if not isinstance(day, dict):
+                continue
+
+            for meal_type in ["breakfast", "mid_morning_snack", "lunch", "evening_snack", "dinner"]:
+                meal = day.get(meal_type, {})
+                if not isinstance(meal, dict):
+                    continue
+                    
+                name = meal.get("name")
+                if not name or name in saved_names:
+                    continue
+                    
+                saved_names.add(name)
+                
+                recipe_id = "RECIPE#" + str(uuid.uuid4())
+                
+                item_data = {
+                    "recipe_id": recipe_id,
+                    "name": name,
+                    "ingredients": meal.get("ingredients", []),
+                    "total_calories": meal.get("total_calories", 0),
+                    "protein_g": meal.get("protein_g", 0),
+                    "carbs_g": meal.get("carbs_g", 0),
+                    "fat_g": meal.get("fat_g", 0),
+                    "fiber_g": meal.get("fiber_g", 0),
+                    "serving_size": meal.get("serving_size", "1 serving"),
+                    "accompaniments": meal.get("accompaniments", []),
+                    "benefits": meal.get("benefits", "AI Generated Meal Plan Recipe"),
+                    "created_at": datetime.now(timezone.utc).isoformat(),
+                    "created_by": "MealPlanGenerator"
+                }
+                
+                item_json = json.dumps(item_data)
+                item_dict = json.loads(item_json, parse_float=Decimal)
+                table.put_item(Item=item_dict)
+    except Exception as e:
+        logger.warning(f"Failed to save recipes to DB: {e}")
 
 
 # ═══════════════════════════════════════════════════════════

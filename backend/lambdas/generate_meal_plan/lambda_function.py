@@ -25,6 +25,7 @@ dynamodb = boto3.resource("dynamodb")
 
 PATIENT_TABLE = os.environ.get("PATIENT_PROFILES_TABLE", "PatientProfiles")
 MEAL_PLANS_TABLE = os.environ.get("MEAL_PLANS_TABLE", "MealPlans")
+RECIPES_TABLE = os.environ.get("RECIPES_TABLE", "NutriGenieCustomRecipes")
 NUTRITION_TABLE = os.environ.get("NUTRITION_DATA_TABLE", "NutritionData")
 VECTORS_BUCKET = os.environ.get("VECTORS_BUCKET", "meal-plan-vectors")
 LLM_MODEL_ID = os.environ.get("LLM_MODEL_ID", "anthropic.claude-3-haiku-20240307-v1:0")
@@ -84,6 +85,9 @@ def lambda_handler(event, context):
         if not meal_plan_json:
             return _response(500, {"error": "Failed to generate meal plan"})
 
+        # ── Step 4.5: Enrich with exact IFCT nutrition based on ingredient quantities ──
+        meal_plan_json = _enrich_with_nutrition(meal_plan_json)
+
         # ── Step 5: Validate the generated plan ──
         validation = _validate_plan(meal_plan_json, patient)
 
@@ -117,6 +121,9 @@ def lambda_handler(event, context):
             "rejected_meals": [],
             "ttl": ttl
         })
+
+        # Save generated recipes to the recipe database for future use
+        _save_recipes_to_db(meal_plan_json)
 
         # Mark any previous active plans as superseded
         _supersede_old_plans(kit_id, plan_id)
@@ -292,8 +299,9 @@ STRICT RULES — VIOLATION IS UNACCEPTABLE:
 6. Daily targets: {calorie_min}–{calorie_max} kcal, protein ≥50g, fiber ≥25g.
 7. All meals must be authentic Indian household recipes for {region} cuisine.
 8. Include exact quantities in grams and full nutritional breakdown.
-9. VARIETY: rotate grains, proteins, vegetables across the week.
-10. Output ONLY valid JSON. No explanations."""
+9. ACCOMPANIMENTS RULE: If a dry carbohydrate is generated (e.g., Dosa, Roti, Chapati, Idli, Paratha), you MUST pair it with a wet accompaniment (e.g., Dal, Sambar, Sabzi, Chutney). Include them in the 'accompaniments' list.
+10. VARIETY: rotate grains, proteins, vegetables across the week.
+11. Output ONLY valid JSON. No explanations."""
 
     user_prompt = f"""Generate a 7-day Indian household meal plan.
 
@@ -314,7 +322,7 @@ Diet: {dietary_pref}
 {patient_context}
 
 Generate the complete 7-day meal plan as valid JSON with structure:
-{{"day_1": {{"breakfast": {{"meal_id":"D1-BF-001","name":"...","ingredients":[{{"name":"...","food_id":"IFCT-XXX","quantity_g":80,"calories":262,"protein_g":5,"carbs_g":48,"fat_g":2,"fiber_g":3}}],"total_calories":368,"macros":{{"protein_g":8,"carbs_g":58,"fat_g":12,"fiber_g":6}},"prep_time_min":20,"tags":["..."]}},...}},...}}"""
+{{"day_1": {{"breakfast": {{"meal_id":"D1-BF-001","name":"...","serving_size":"e.g., 2 dosas","accompaniments":["..."],"ingredients":[{{"name":"...","food_id":"IFCT-XXX","quantity_g":80,"calories":262,"protein_g":5,"carbs_g":48,"fat_g":2,"fiber_g":3}}],"total_calories":368,"macros":{{"protein_g":8,"carbs_g":58,"fat_g":12,"fiber_g":6}},"prep_time_min":20,"tags":["..."]}},...}},...}}"""
 
     return system_prompt, user_prompt
 
@@ -402,6 +410,113 @@ def _supersede_old_plans(kit_id: str, current_plan_id: str):
                 )
     except Exception as e:
         logger.warning(f"Failed to supersede old plans: {e}")
+
+
+def _enrich_with_nutrition(plan: dict) -> dict:
+    """Recalculate meal nutritional totals exactly based on IFCT values and ingredient quantities."""
+    global _nutrition_metadata_cache
+    if not _nutrition_metadata_cache:
+        return plan
+
+    food_lookup = {f["food_id"]: f for f in _nutrition_metadata_cache if "food_id" in f}
+    name_lookup = {f.get("name_en", "").lower(): f for f in _nutrition_metadata_cache}
+
+    for day_key in [f"day_{i}" for i in range(1, 8)]:
+        day = plan.get(day_key, {})
+        if not isinstance(day, dict):
+            continue
+
+        for meal_type in ["breakfast", "mid_morning_snack", "lunch", "evening_snack", "dinner"]:
+            meal = day.get(meal_type, {})
+            if not isinstance(meal, dict):
+                continue
+
+            meal_calc = {"cal": 0, "pro": 0, "carb": 0, "fat": 0, "fib": 0}
+
+            for ing in meal.get("ingredients", []):
+                food_id = ing.get("food_id", "")
+                food_name = ing.get("name", "").lower()
+
+                nutrition_info = food_lookup.get(food_id) or name_lookup.get(food_name)
+
+                if nutrition_info and "per_100g" in nutrition_info:
+                    qty = ing.get("quantity_g", 100)
+                    multiplier = float(qty) / 100.0
+                    
+                    ing_cal = round(nutrition_info["per_100g"].get("calories", 0) * multiplier, 1)
+                    ing_pro = round(nutrition_info["per_100g"].get("protein_g", 0) * multiplier, 1)
+                    ing_carb = round(nutrition_info["per_100g"].get("carbs_g", 0) * multiplier, 1)
+                    ing_fat = round(nutrition_info["per_100g"].get("fat_g", 0) * multiplier, 1)
+                    ing_fib = round(nutrition_info["per_100g"].get("fiber_g", 0) * multiplier, 1)
+
+                    ing["nutrition_per_serving"] = {
+                        "calories": ing_cal, "protein_g": ing_pro, "carbs_g": ing_carb,
+                        "fat_g": ing_fat, "fiber_g": ing_fib
+                    }
+
+                    meal_calc["cal"] += ing_cal
+                    meal_calc["pro"] += ing_pro
+                    meal_calc["carb"] += ing_carb
+                    meal_calc["fat"] += ing_fat
+                    meal_calc["fib"] += ing_fib
+
+            if meal_calc["cal"] > 0:
+                meal["total_calories"] = int(meal_calc["cal"])
+                if "macros" not in meal:
+                    meal["macros"] = {}
+                meal["macros"]["protein_g"] = round(meal_calc["pro"], 1)
+                meal["macros"]["carbs_g"] = round(meal_calc["carb"], 1)
+                meal["macros"]["fat_g"] = round(meal_calc["fat"], 1)
+                meal["macros"]["fiber_g"] = round(meal_calc["fib"], 1)
+
+    return plan
+
+
+def _save_recipes_to_db(meal_plan: dict):
+    """Save unique generated meals to the custom recipes table."""
+    import uuid
+    from datetime import datetime, timezone
+    
+    table = dynamodb.Table(RECIPES_TABLE)
+    saved_names = set()
+
+    for day_key in [f"day_{i}" for i in range(1, 8)]:
+        day = meal_plan.get(day_key, {})
+        if not isinstance(day, dict):
+            continue
+
+        for meal_type in ["breakfast", "mid_morning_snack", "lunch", "evening_snack", "dinner"]:
+            meal = day.get(meal_type, {})
+            if not isinstance(meal, dict):
+                continue
+                
+            name = meal.get("name")
+            if not name or name in saved_names:
+                continue
+                
+            saved_names.add(name)
+            
+            recipe_id = "RECIPE#" + str(uuid.uuid4())
+            macros = meal.get("macros", {})
+            
+            try:
+                table.put_item(Item={
+                    "recipe_id": recipe_id,
+                    "name": name,
+                    "ingredients": meal.get("ingredients", []),
+                    "total_calories": meal.get("total_calories", 0),
+                    "protein_g": macros.get("protein_g", 0),
+                    "carbs_g": macros.get("carbs_g", 0),
+                    "fat_g": macros.get("fat_g", 0),
+                    "fiber_g": macros.get("fiber_g", 0),
+                    "serving_size": meal.get("serving_size", "1 serving"),
+                    "accompaniments": meal.get("accompaniments", []),
+                    "benefits": "AI Generated Meal Plan Recipe",
+                    "created_at": datetime.now(timezone.utc).isoformat(),
+                    "created_by": "MealPlanGenerator"
+                })
+            except Exception as e:
+                logger.warning(f"Failed to save recipe {name} to DB: {e}")
 
 
 def _response(status_code: int, body: dict) -> dict:

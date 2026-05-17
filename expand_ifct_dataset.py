@@ -12,32 +12,57 @@ def process_ifct_csv_to_json(csv_path="index.csv", output_path="indian_nutrition
         df = pd.read_csv(csv_path)
         
         output_data = []
+        import re
         
         for index, row in df.iterrows():
-            item = {
-                "food_id": f"IFCT-{str(index).zfill(3)}",
-                "category": row.get("Food_group", "General"),
-                "name_en": str(row.get("name", row.get("Food_name", "Unknown"))),
-                "name_hi": row.get("Scientific_name", ""),
-                "name_regional": {},
-                "per_100g": {
-                    # Note: You may need to adjust these column headers based on the exact IFCT headers
-                    "calories": float(row.get("Energy", row.get("Energy_kcal", 0))),
-                    "protein_g": float(row.get("Protein", 0)),
-                    "carbs_g": float(row.get("Carbohydrate", 0)),
-                    "fat_g": float(row.get("Fat", 0)),
-                    "fiber_g": float(row.get("Dietary_Fiber", 0))
-                },
-                "micronutrients": {
-                    "iron_mg": float(row.get("Iron", 0)),
-                    "calcium_mg": float(row.get("Calcium", 0)),
-                    "zinc_mg": float(row.get("Zinc", 0)),
-                },
-                "common_dishes": [str(row.get("name", "Ingredient"))],
-                "allergen_tags": [],
-                "season": "year-round"
-            }
-            output_data.append(item)
+            raw = str(row.get('Raw_Data', ''))
+            
+            # Extract numbers at the end
+            name_match = re.match(r'^(.*?)\s+([\d\.\±\s]+)$', raw)
+            if not name_match:
+                continue
+                
+            name_en = name_match.group(1).strip()
+            if not name_en:
+                name_en = "Unknown"
+                
+            nums = name_match.group(2).split()
+            
+            try:
+                # Remove ± and parse as floats
+                clean_nums = [float(n.split('±')[0]) if '±' in n else float(n) for n in nums]
+                
+                # Based on standard IFCT Proximate format:
+                # 0: Samples, 1: Moisture, 2: Protein, 3: Fat, 4: Ash, 5: Crude Fiber, 
+                # 6: Insoluble DF, 7: Soluble DF, 8: Carbohydrate, 9: Energy(kJ)
+                if len(clean_nums) >= 10:
+                    calories_kcal = clean_nums[9] / 4.184
+                    
+                    item = {
+                        "food_id": str(row.get("Food_Code", f"IFCT-{str(index).zfill(3)}")),
+                        "category": "General",
+                        "name_en": name_en,
+                        "name_hi": "",
+                        "name_regional": {},
+                        "per_100g": {
+                            "calories": round(calories_kcal, 2),
+                            "protein_g": round(clean_nums[2], 2),
+                            "carbs_g": round(clean_nums[8], 2),
+                            "fat_g": round(clean_nums[3], 2),
+                            "fiber_g": round(clean_nums[5], 2)
+                        },
+                        "micronutrients": {
+                            "iron_mg": 0.0,
+                            "calcium_mg": 0.0,
+                            "zinc_mg": 0.0,
+                        },
+                        "common_dishes": [name_en],
+                        "allergen_tags": [],
+                        "season": "year-round"
+                    }
+                    output_data.append(item)
+            except ValueError:
+                continue
             
         print(f"Successfully mapped {len(output_data)} ingredients.")
         
