@@ -112,9 +112,9 @@ OUTPUT JSON:
             contentType="application/json",
             accept="application/json",
             body=json.dumps({
-                "messages": [{"role": "user", "content": [{"text": full_prompt}]}],
-                "inferenceConfig": {
-                    "maxTokens": 1500,
+                "inputText": system_prompt + "\n\n" + full_prompt,
+                "textGenerationConfig": {
+                    "maxTokenCount": 1500,
                     "temperature": 0.5,
                     "topP": 0.9,
                 }
@@ -122,7 +122,7 @@ OUTPUT JSON:
         )
 
         result = json.loads(response["body"].read())
-        content = result.get("output", {}).get("message", {}).get("content", [{}])[0].get("text", "")
+        content = result.get("results", [{}])[0].get("outputText", "")
 
         # Parse JSON
         json_start = content.find("{")

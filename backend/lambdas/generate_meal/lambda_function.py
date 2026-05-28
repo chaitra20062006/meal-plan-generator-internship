@@ -15,7 +15,7 @@ import struct
 from datetime import datetime
 
 import boto3
-import numpy as np
+import math
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -234,21 +234,24 @@ def _rag_retrieve(patient: dict, nutrition_data: list) -> list:
             else:
                 embeddings.append([0.0] * 1024)  # fallback zero vector
 
-        _nutrition_cache["embeddings"] = np.array(embeddings, dtype=np.float32)
+        _nutrition_cache["embeddings"] = embeddings
         _nutrition_cache["texts"] = food_texts
 
-    # Cosine similarity search
-    query_vec = np.array(query_embedding, dtype=np.float32)
-    query_norm = query_vec / (np.linalg.norm(query_vec) + 1e-8)
+    # Pure Python Cosine similarity search
+    query_vec = query_embedding
+    q_mag = math.sqrt(sum(v*v for v in query_vec)) + 1e-8
 
-    food_embeddings = _nutrition_cache["embeddings"]
-    norms = np.linalg.norm(food_embeddings, axis=1, keepdims=True) + 1e-8
-    food_normed = food_embeddings / norms
-
-    similarities = np.dot(food_normed, query_norm)
+    similarities = []
+    for idx, food_emb in enumerate(_nutrition_cache["embeddings"]):
+        f_mag = math.sqrt(sum(v*v for v in food_emb)) + 1e-8
+        dot = sum(q*f for q, f in zip(query_vec, food_emb))
+        similarities.append((idx, dot / (q_mag * f_mag)))
 
     # Get top 30 most relevant foods
-    top_indices = np.argsort(similarities)[::-1][:30]
+    similarities.sort(key=lambda x: x[1], reverse=True)
+    top_pairs = similarities[:30]
+    top_indices = [x[0] for x in top_pairs]
+    score_lookup = {x[0]: x[1] for x in top_pairs}
 
     # Filter out foods in avoid list
     relevant_foods = []
@@ -271,7 +274,7 @@ def _rag_retrieve(patient: dict, nutrition_data: list) -> list:
 
         if not is_avoided:
             food_copy = dict(food)
-            food_copy["relevance_score"] = float(similarities[idx])
+            food_copy["relevance_score"] = float(score_lookup.get(idx, 0.0))
             relevant_foods.append(food_copy)
 
     return relevant_foods[:20]
@@ -333,7 +336,7 @@ def _generate_meal_plan(patient: dict, relevant_foods: list) -> dict:
         calorie_target = 1800
         weight_note = f"NORMAL weight (BMI {bmi:.1f})."
 
-    prompt = f"""You are a certified Indian clinical nutritionist AI. Generate a personalized 7-day Indian household meal plan.
+    prompt = f"""You are a certified Indian clinical nutritionist AI. Generate a personalized 1-day Indian household meal plan.
 
 STRICT RULES:
 1. NEVER use any food from the AVOID LIST.
@@ -373,12 +376,10 @@ OUTPUT JSON SCHEMA:
     "lunch": {{...}},
     "evening_snack": {{...}},
     "dinner": {{...}}
-  }},
-  "day_2": {{...}},
-  ... (all 7 days)
+  }}
 }}
 
-Generate the complete 7-day meal plan now. Output ONLY valid JSON."""
+Generate the complete 1-day meal plan now. Output ONLY valid JSON."""
 
     try:
         response = bedrock.invoke_model(
@@ -386,9 +387,9 @@ Generate the complete 7-day meal plan now. Output ONLY valid JSON."""
             contentType="application/json",
             accept="application/json",
             body=json.dumps({
-                "messages": [{"role": "user", "content": [{"text": prompt}]}],
-                "inferenceConfig": {
-                    "maxTokens": 8000,
+                "inputText": prompt,
+                "textGenerationConfig": {
+                    "maxTokenCount": 5000,
                     "temperature": 0.3,
                     "topP": 0.9,
                 }
@@ -396,7 +397,7 @@ Generate the complete 7-day meal plan now. Output ONLY valid JSON."""
         )
 
         result = json.loads(response["body"].read())
-        content = result.get("output", {}).get("message", {}).get("content", [{}])[0].get("text", "")
+        content = result.get("results", [{}])[0].get("outputText", "")
 
         # Extract JSON from response
         json_start = content.find("{")

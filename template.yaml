@@ -12,7 +12,7 @@ Globals:
     Environment:
       Variables:
         DATA_BUCKET: !Ref DataBucket
-        LLM_MODEL_ID: amazon.nova-lite-v1:0
+        LLM_MODEL_ID: amazon.titan-text-express-v1
         EMBEDDING_MODEL_ID: amazon.titan-embed-text-v2:0
         MEAL_PLANS_TABLE: !Ref MealPlansTable
 
@@ -112,8 +112,6 @@ Resources:
       Handler: lambda_function.lambda_handler
       MemorySize: 1024
       Timeout: 300
-      Layers:
-        - !Ref NumpyLayer
       Policies:
         - S3ReadPolicy:
             BucketName: !Ref DataBucket

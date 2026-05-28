@@ -6,7 +6,7 @@
  */
 
 // ═══ Config ═══
-const API_URL = 'https://f8c7x5y2hg.execute-api.us-east-1.amazonaws.com/prod';
+const API_URL = 'https://ax72uksye8.execute-api.us-east-1.amazonaws.com/prod';
 
 const $ = id => document.getElementById(id);
 
